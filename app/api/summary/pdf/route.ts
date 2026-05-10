@@ -139,32 +139,37 @@ function decorateCover(
   content: SummaryPdfContent | TarfPdfContent,
   theme: ReturnType<typeof createPdfTheme>
 ) {
-  page.push(fillRect(margin, 668, pageWidth - margin * 2, 92, [0.03, 0.05, 0.08]));
-  page.push(strokeRect(margin, 668, pageWidth - margin * 2, 92, theme.borderColor, 1));
-  page.push(textBlock([content.title], margin + 18, 724, 24, 28, theme.white, "F2"));
+  page.push(fillRect(24, 654, pageWidth - 48, 122, [0.03, 0.05, 0.08]));
+  page.push(strokeRect(24, 654, pageWidth - 48, 122, theme.borderColor, 1));
+  page.push(textBlock([content.title], 46, 730, 24, 28, theme.white, "F2"));
 
-  page.push(fillRect(margin + 18, 694, 130, 18, [0.07, 0.12, 0.18]));
-  page.push(strokeRect(margin + 18, 694, 130, 18, theme.rowBorderColor, 0.8));
-  page.push(textBlock([content.subtitle.toUpperCase()], margin + 26, 700, 8.5, 10, theme.muted, "F1"));
+  page.push(fillRect(46, 686, 172, 24, [0.07, 0.12, 0.18]));
+  page.push(strokeRect(46, 686, 172, 24, theme.rowBorderColor, 0.8));
+  page.push(textBlock([content.subtitle.toUpperCase()], 58, 694, 8.5, 10, theme.muted, "F1"));
 
-  page.push(fillRect(margin + 18, 670, 96, 18, [0.07, 0.12, 0.18]));
-  page.push(strokeRect(margin + 18, 670, 96, 18, theme.cyan, 0.8));
-  page.push(textBlock([`Pair: ${content.pair}`], margin + 26, 676, 8.5, 10, theme.white, "F1"));
+  page.push(fillRect(258, 686, 128, 24, [0.07, 0.12, 0.18]));
+  page.push(strokeRect(258, 686, 128, 24, theme.cyan, 0.8));
+  page.push(textBlock([`Pair: ${content.pair}`], 270, 694, 8.5, 10, theme.white, "F1"));
 
-  page.push(fillRect(404, 686, 136, 50, [0.06, 0.11, 0.17]));
-  page.push(strokeRect(404, 686, 136, 50, theme.cyan, 0.8));
-  page.push(line(418, 702, 448, 720, theme.cyan, 1.6));
-  page.push(line(448, 720, 478, 712, theme.cyan, 1.6));
-  page.push(line(478, 712, 508, 728, theme.borderColor, 1.6));
-  page.push(line(508, 728, 532, 722, theme.white, 1.6));
-  page.push(textBlock(["Market context", "hedge framing"], 418, 692, 8.5, 11, theme.muted, "F1"));
+  page.push(fillRect(413, 676, 154, 58, [0.06, 0.11, 0.17]));
+  page.push(strokeRect(413, 676, 154, 58, theme.cyan, 0.8));
+  page.push(line(430, 696, 468, 720, theme.cyan, 1.6));
+  page.push(line(468, 720, 503, 712, theme.cyan, 1.6));
+  page.push(line(503, 712, 537, 730, theme.borderColor, 1.6));
+  page.push(line(537, 730, 553, 724, theme.white, 1.6));
+
+  const highlightLayouts = [
+    { x: 42, width: 184, wrap: 24 },
+    { x: 238, width: 142, wrap: 18 },
+    { x: 392, width: 178, wrap: 20 }
+  ];
 
   content.highlights.forEach((highlight, index) => {
-    const x = margin + index * 176;
-    page.push(fillRect(x, 592, 160, 56, theme.panelColor));
-    page.push(strokeRect(x, 592, 160, 56, theme.rowBorderColor, 0.9));
-    page.push(textBlock([highlight.label.toUpperCase()], x + 14, 628, 8.5, 10, theme.borderColor, "F1"));
-    page.push(textBlock(wrapText(highlight.value, 28), x + 14, 608, 12, 14, theme.white, "F2"));
+    const layout = highlightLayouts[index] ?? { x: margin + index * 176, width: 160, wrap: 20 };
+    page.push(fillRect(layout.x, 584, layout.width, 68, theme.panelColor));
+    page.push(strokeRect(layout.x, 584, layout.width, 68, theme.rowBorderColor, 0.9));
+    page.push(textBlock([highlight.label.toUpperCase()], layout.x + 14, 628, 8.5, 10, theme.borderColor, "F1"));
+    page.push(textBlock(wrapText(highlight.value, layout.wrap), layout.x + 14, 606, 11.5, 13, theme.white, "F2"));
   });
 }
 
@@ -200,14 +205,17 @@ function buildSummaryPdf(locale: string) {
     currentY = bottom - 16;
   }
 
-  if (currentY - 64 < 72) {
+  const disclaimerLines = wrapText(summary.disclaimer, 86);
+  const disclaimerHeight = 28 + disclaimerLines.length * 12;
+
+  if (currentY - disclaimerHeight - 16 < 72) {
     pushNewPage();
   }
 
-  currentPage.push(fillRect(margin, currentY - 48, pageWidth - margin * 2, 48, theme.softPanelColor));
-  currentPage.push(strokeRect(margin, currentY - 48, pageWidth - margin * 2, 48, theme.borderColor, 0.9));
+  currentPage.push(fillRect(margin, currentY - disclaimerHeight, pageWidth - margin * 2, disclaimerHeight, theme.softPanelColor));
+  currentPage.push(strokeRect(margin, currentY - disclaimerHeight, pageWidth - margin * 2, disclaimerHeight, theme.borderColor, 0.9));
   currentPage.push(textBlock(["DISCLAIMER"], margin + 16, currentY - 18, 8.5, 10, theme.borderColor, "F1"));
-  currentPage.push(textBlock(wrapText(summary.disclaimer, 92), margin + 16, currentY - 34, 9.5, 12, theme.muted, "F1"));
+  currentPage.push(textBlock(disclaimerLines, margin + 16, currentY - 36, 9.5, 12, theme.muted, "F1"));
 
   pageStreams.push(currentPage.join("\n"));
   return buildPdfDocument(pageStreams);
@@ -273,10 +281,12 @@ function buildTarfPdf(form: TarfTermSheetForm) {
   currentPage.push(textBlock(warningLines, margin + 16, currentY - 34, 9.5, 12, theme.white, "F1"));
   currentY -= warningHeight + 16;
 
-  currentPage.push(fillRect(margin, currentY - 42, pageWidth - margin * 2, 42, theme.softPanelColor));
-  currentPage.push(strokeRect(margin, currentY - 42, pageWidth - margin * 2, 42, theme.borderColor, 0.9));
-  currentPage.push(textBlock(["DISCLAIMER"], margin + 16, currentY - 16, 8.5, 10, theme.borderColor, "F1"));
-  currentPage.push(textBlock(wrapText(content.disclaimer, 92), margin + 16, currentY - 30, 9.2, 12, theme.muted, "F1"));
+  const disclaimerLines = wrapText(content.disclaimer, 86);
+  const disclaimerHeight = 28 + disclaimerLines.length * 12;
+  currentPage.push(fillRect(margin, currentY - disclaimerHeight, pageWidth - margin * 2, disclaimerHeight, theme.softPanelColor));
+  currentPage.push(strokeRect(margin, currentY - disclaimerHeight, pageWidth - margin * 2, disclaimerHeight, theme.borderColor, 0.9));
+  currentPage.push(textBlock(["DISCLAIMER"], margin + 16, currentY - 18, 8.5, 10, theme.borderColor, "F1"));
+  currentPage.push(textBlock(disclaimerLines, margin + 16, currentY - 36, 9.2, 12, theme.muted, "F1"));
 
   pageStreams.push(currentPage.join("\n"));
   return buildPdfDocument(pageStreams);

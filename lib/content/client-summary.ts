@@ -45,6 +45,7 @@ export type TarfTermSheetForm = {
   numberOfFixings: string;
   fixingFrequency: string;
   fixingDates: string;
+  settlementPeriodDays: string;
   settlementDates: string;
   referenceSource: string;
   strikeRate: string;
@@ -75,8 +76,83 @@ export function getClientSummaryCopy(locale: string) {
   return localeCopy[locale as keyof typeof localeCopy] ?? localeCopy.en;
 }
 
+function isBusinessDay(date: Date) {
+  const day = date.getDay();
+  return day !== 0 && day !== 6;
+}
+
+export function toIsoDate(date: Date) {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getDate()}`.padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+export function formatScheduleDate(date: Date) {
+  return toIsoDate(date);
+}
+
+export function parseIsoDate(value: string) {
+  const [year, month, day] = value.split("-").map((item) => Number.parseInt(item, 10));
+  if (!year || !month || !day) return null;
+  const date = new Date(year, month - 1, day);
+  if (Number.isNaN(date.getTime())) return null;
+  return date;
+}
+
+export function addBusinessDays(startDate: Date, businessDays: number) {
+  const date = new Date(startDate);
+  let added = 0;
+
+  while (added < businessDays) {
+    date.setDate(date.getDate() + 1);
+    if (isBusinessDay(date)) {
+      added += 1;
+    }
+  }
+
+  return date;
+}
+
+export function advanceFrequency(startDate: Date, frequency: string, step: number) {
+  const date = new Date(startDate);
+
+  if (frequency === "Weekly") {
+    date.setDate(date.getDate() + step * 7);
+    return date;
+  }
+
+  date.setMonth(date.getMonth() + step);
+  return date;
+}
+
+export function clampPositiveInteger(value: string, fallback: number, max = 60) {
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return fallback;
+  return Math.min(parsed, max);
+}
+
+export function buildFixingSchedule(effectiveDate: string, numberOfFixings: string, fixingFrequency: string) {
+  const effective = parseIsoDate(effectiveDate);
+  if (!effective) return [];
+
+  const count = clampPositiveInteger(numberOfFixings, 12);
+  return Array.from({ length: count }, (_, index) => advanceFrequency(effective, fixingFrequency, index));
+}
+
 export function getDefaultTarfForm(): TarfTermSheetForm {
   const pair = formatFxPair(tarfCase.pair);
+  const tradeDate = addBusinessDays(new Date(), 2);
+  const effectiveDate = addBusinessDays(new Date(), 3);
+  const numberOfFixings = "12";
+  const fixingFrequency = "Monthly";
+  const settlementPeriodDays = "2";
+  const fixingSchedule = buildFixingSchedule(toIsoDate(effectiveDate), numberOfFixings, fixingFrequency);
+  const settlementSchedule = fixingSchedule.map((date) =>
+    addBusinessDays(date, clampPositiveInteger(settlementPeriodDays, 2, 30))
+  );
+  const finalExpiryDate = fixingSchedule.at(-1) ?? effectiveDate;
+  const finalSettlementDate = settlementSchedule.at(-1) ?? addBusinessDays(finalExpiryDate, 2);
 
   return {
     productName: "FX Target Redemption Forward / TARF",
@@ -84,20 +160,21 @@ export function getDefaultTarfForm(): TarfTermSheetForm {
     clientProfile: "Corporate importer with recurring USD purchase needs",
     objective:
       "Buy USD at an enhanced rate versus a standard forward, subject to target redemption and possible leverage.",
-    tradeDate: "[Trade date]",
-    effectiveDate: "[Effective date]",
-    finalExpiryDate: "[Final expiry date]",
-    finalSettlementDate: "[Final settlement date]",
+    tradeDate: toIsoDate(tradeDate),
+    effectiveDate: toIsoDate(effectiveDate),
+    finalExpiryDate: toIsoDate(finalExpiryDate),
+    finalSettlementDate: toIsoDate(finalSettlementDate),
     currencyPair: pair,
     quoteConvention: "Domestic Currency per 1 USD",
     clientDirection: "Client buys USD and sells Domestic Currency",
     calculationAgent: "Bank",
     documentation: "ISDA Master Agreement / local master agreement / confirmation",
-    numberOfFixings: "12 monthly fixings",
-    fixingFrequency: "Monthly",
-    fixingDates: "[Schedule to be attached]",
-    settlementDates: "Usually spot date after each fixing date, e.g. T+2",
-    referenceSource: "Relevant FX fixing source, e.g. Bloomberg BFIX / Reuters / central bank fixing",
+    numberOfFixings,
+    fixingFrequency,
+    fixingDates: fixingSchedule.map(formatScheduleDate).join(", "),
+    settlementPeriodDays,
+    settlementDates: settlementSchedule.map(formatScheduleDate).join(", "),
+    referenceSource: "Reuters",
     strikeRate: `K = ${tarfCase.strike.toFixed(4)} Domestic Currency per USD`,
     forwardReference: "Standard market forward curve at trade date",
     targetPoints: "[Target points / pips]",
@@ -135,6 +212,7 @@ export const tarfTermSheetSections: TermSheetSection[] = [
       { key: "numberOfFixings", label: "Number of Fixings" },
       { key: "fixingFrequency", label: "Fixing Frequency" },
       { key: "fixingDates", label: "Fixing Date(s)" },
+      { key: "settlementPeriodDays", label: "Settlement Period (business days)" },
       { key: "settlementDates", label: "Settlement Date(s)" },
       { key: "referenceSource", label: "Reference Source" },
       { key: "strikeRate", label: "Strike Rate" },

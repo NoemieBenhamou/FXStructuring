@@ -1,13 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
+  addBusinessDays,
+  buildFixingSchedule,
+  clampPositiveInteger,
+  formatScheduleDate,
   getClientSummaryCopy,
   getDefaultTarfForm,
+  parseIsoDate,
   tarfTermSheetSections,
+  toIsoDate,
   type TermSheetFieldKey,
   type TarfTermSheetForm
 } from "@/lib/content/client-summary";
@@ -36,10 +43,40 @@ const wideFields = new Set<TermSheetFieldKey>([
   "leverageFactor"
 ]);
 
+const datePickerFields = new Set<TermSheetFieldKey>(["tradeDate", "effectiveDate"]);
+const computedFields = new Set<TermSheetFieldKey>(["finalExpiryDate", "finalSettlementDate", "fixingDates", "settlementDates"]);
+const numericFields = new Set<TermSheetFieldKey>(["numberOfFixings", "settlementPeriodDays"]);
+const frequencyOptions = ["Weekly", "Monthly"] as const;
+const referenceSources = ["Reuters", "BFIX", "Bloomberg", "Other"] as const;
+
 export function ClientSummary({ locale }: { locale: string }) {
   const copy = getClientSummaryCopy(locale);
   const [activeView, setActiveView] = useState<"summary" | "tarf">("summary");
   const [form, setForm] = useState<TarfTermSheetForm>(() => getDefaultTarfForm());
+  const computedForm = useMemo(() => {
+    const tradeDate = parseIsoDate(form.tradeDate) ?? addBusinessDays(new Date(), 2);
+    const effectiveDate = parseIsoDate(form.effectiveDate) ?? addBusinessDays(new Date(), 3);
+    const numberOfFixings = clampPositiveInteger(form.numberOfFixings, 12).toString();
+    const settlementPeriodDays = clampPositiveInteger(form.settlementPeriodDays, 2, 30).toString();
+    const fixingSchedule = buildFixingSchedule(toIsoDate(effectiveDate), numberOfFixings, form.fixingFrequency);
+    const settlementSchedule = fixingSchedule.map((date) =>
+      addBusinessDays(date, clampPositiveInteger(settlementPeriodDays, 2, 30))
+    );
+    const finalExpiryDate = fixingSchedule.at(-1) ?? effectiveDate;
+    const finalSettlementDate = settlementSchedule.at(-1) ?? addBusinessDays(finalExpiryDate, 2);
+
+    return {
+      ...form,
+      tradeDate: toIsoDate(tradeDate),
+      effectiveDate: toIsoDate(effectiveDate),
+      numberOfFixings,
+      settlementPeriodDays,
+      finalExpiryDate: toIsoDate(finalExpiryDate),
+      finalSettlementDate: toIsoDate(finalSettlementDate),
+      fixingDates: fixingSchedule.map(formatScheduleDate).join(", "),
+      settlementDates: settlementSchedule.map(formatScheduleDate).join(", ")
+    };
+  }, [form]);
 
   function updateField(key: TermSheetFieldKey, value: string) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -62,7 +99,7 @@ export function ClientSummary({ locale }: { locale: string }) {
       body: JSON.stringify({
         mode: "tarf",
         locale,
-        form
+        form: computedForm
       })
     });
 
@@ -108,8 +145,8 @@ export function ClientSummary({ locale }: { locale: string }) {
         <>
           <div className="grid gap-4 sm:grid-cols-3">
             <MetricCard label="Reference pair" value={form.currencyPair} />
-            <MetricCard label="Indicative strike" value={form.strikeRate.replace("K = ", "")} />
-            <MetricCard label="Leverage factor" value={form.leverageFactor} />
+            <MetricCard label="Indicative strike" value={computedForm.strikeRate.replace("K = ", "")} />
+            <MetricCard label="Leverage factor" value={computedForm.leverageFactor} />
           </div>
 
           <div className="grid gap-6 xl:grid-cols-2">
@@ -144,7 +181,7 @@ export function ClientSummary({ locale }: { locale: string }) {
               <CardHeader>
                 <CardTitle>Risk warning</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm leading-7 text-amber-100">{form.knockOutEvent}. The structure remains subject to suitability, target redemption mechanics, and leverage governance.</CardContent>
+              <CardContent className="text-sm leading-7 text-amber-100">{computedForm.knockOutEvent}. The structure remains subject to suitability, target redemption mechanics, and leverage governance.</CardContent>
             </Card>
           </div>
         </>
@@ -167,22 +204,60 @@ export function ClientSummary({ locale }: { locale: string }) {
                       const wide = wideFields.has(field.key);
                       const inputClassName =
                         "w-full rounded-2xl border border-bank-border bg-bank-bgAlt px-4 py-3 text-sm text-bank-text outline-none transition placeholder:text-bank-muted focus:border-bank-cyan";
+                      const value = computedFields.has(field.key) ? computedForm[field.key] : form[field.key];
 
                       return (
                         <label key={field.key} className={wide ? "space-y-2 md:col-span-2" : "space-y-2"}>
                           <span className="text-[11px] uppercase tracking-[0.18em] text-bank-muted">{field.label}</span>
-                          {multiline ? (
+                          {computedFields.has(field.key) ? (
+                            <div className="rounded-2xl border border-bank-border bg-bank-bgAlt/60 px-4 py-3 text-sm leading-6 text-bank-text">
+                              {value}
+                            </div>
+                          ) : datePickerFields.has(field.key) ? (
+                            <Input
+                              type="date"
+                              value={value}
+                              onChange={(event) => updateField(field.key, event.target.value)}
+                            />
+                          ) : field.key === "fixingFrequency" ? (
+                            <div className="flex flex-wrap gap-2">
+                              {frequencyOptions.map((option) => (
+                                <Button
+                                  key={option}
+                                  type="button"
+                                  variant={form.fixingFrequency === option ? "primary" : "secondary"}
+                                  onClick={() => updateField("fixingFrequency", option)}
+                                >
+                                  {option}
+                                </Button>
+                              ))}
+                            </div>
+                          ) : field.key === "referenceSource" ? (
+                            <div className="flex flex-wrap gap-2">
+                              {referenceSources.map((option) => (
+                                <Button
+                                  key={option}
+                                  type="button"
+                                  variant={form.referenceSource === option ? "primary" : "secondary"}
+                                  onClick={() => updateField("referenceSource", option)}
+                                >
+                                  {option}
+                                </Button>
+                              ))}
+                            </div>
+                          ) : multiline ? (
                             <textarea
-                              value={form[field.key]}
+                              value={value}
                               onChange={(event) => updateField(field.key, event.target.value)}
                               rows={3}
                               className={`${inputClassName} resize-y`}
                             />
                           ) : (
-                            <input
-                              value={form[field.key]}
+                            <Input
+                              type={numericFields.has(field.key) ? "number" : "text"}
+                              min={numericFields.has(field.key) ? 1 : undefined}
+                              value={value}
                               onChange={(event) => updateField(field.key, event.target.value)}
-                              className={inputClassName}
                             />
                           )}
                         </label>
@@ -211,7 +286,7 @@ export function ClientSummary({ locale }: { locale: string }) {
                     {section.fields.map((field) => (
                       <div key={field.key} className="grid gap-2 px-4 py-3 md:grid-cols-[minmax(0,190px)_1fr]">
                         <div className="text-xs uppercase tracking-[0.14em] text-bank-muted">{field.label}</div>
-                        <div className="text-sm leading-6 text-bank-text">{form[field.key]}</div>
+                        <div className="text-sm leading-6 text-bank-text">{computedForm[field.key]}</div>
                       </div>
                     ))}
                   </div>
