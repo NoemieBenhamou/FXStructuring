@@ -1,0 +1,32 @@
+{
+  "articles": [
+    {
+      "title": "USD volatility remains in focus ahead of central bank communication",
+      "source": "Demo feed",
+      "publishedAt": "2026-05-10T08:00:00.000Z",
+      "url": "#",
+      "tags": ["FX", "USD"]
+    },
+    {
+      "title": "EUR rates differential continues to shape EURUSD forward carry discussion",
+      "source": "Demo feed",
+      "publishedAt": "2026-05-10T08:15:00.000Z",
+      "url": "#",
+      "tags": ["FX", "EUR", "USD"]
+    },
+    {
+      "title": "JPY hedging demand rises as corporates review budget rates",
+      "source": "Demo feed",
+      "publishedAt": "2026-05-10T08:30:00.000Z",
+      "url": "#",
+      "tags": ["FX", "JPY"]
+    },
+    {
+      "title": "Commodity bloc currencies outperform as cross-asset volatility compresses",
+      "source": "Demo feed",
+      "publishedAt": "2026-05-10T08:45:00.000Z",
+      "url": "#",
+      "tags": ["FX", "AUD", "CAD"]
+    }
+  ]
+}

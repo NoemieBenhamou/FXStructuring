@@ -1,0 +1,16 @@
+{
+  "baseCurrency": "EUR",
+  "weights": {
+    "USD": 0.32,
+    "JPY": 0.1,
+    "CNY": 0.06,
+    "TWD": 0.04,
+    "GBP": 0.04,
+    "RUB": 0.04,
+    "KRW": 0.04,
+    "CAD": 0.04,
+    "BRL": 0.04,
+    "AUD": 0.04,
+    "Minor": 0.24
+  }
+}

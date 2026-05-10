@@ -1,0 +1,19 @@
+{
+  "pair": "AUDJPY",
+  "spot": 96,
+  "forward6m": 94.2227,
+  "atmVol6m": 0.11631,
+  "rr25d": -0.02715,
+  "bf25d": 0.00209,
+  "buyerStructure": {
+    "name": "Zero-cost risk reversal",
+    "callStrike": 99,
+    "putStrike": 88
+  },
+  "sellerStructure": {
+    "name": "Knock-out forward",
+    "forwardRate": 96,
+    "barrier": 85.5,
+    "barrierStyle": "European"
+  }
+}

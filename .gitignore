@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+dist
+.pnpm-store
+.pnpm-home
+pnpm.exe
+coverage
+*.log
+next-env.d.ts
+
+.vercel

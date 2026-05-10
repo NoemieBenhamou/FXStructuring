@@ -1,0 +1,63 @@
+{
+  "app": {
+    "name": "FX Structuring Copilot",
+    "codename": "FXStructuringLag",
+    "tagline": "Dados de mercado, análise de payoff e ideias de hedge FX prontas para cliente em um cockpit de estruturação multilíngue.",
+    "disclaimer": "Protótipo educacional apenas. Não é aconselhamento de investimento. Preços, payoffs, probabilidades, Greeks e métricas de risco são ilustrativos e não são cotações executáveis. Os feeds ao vivo, quando ativados, são de terceiros e podem estar atrasados, incompletos ou indisponíveis."
+  },
+  "nav": {
+    "home": "Início",
+    "market": "Cockpit de Mercado",
+    "exposure": "Tradutor de exposição",
+    "structures": "Recomendador de estruturas",
+    "payoffLab": "Laboratório de Payoff",
+    "portfolio": "Risco FX de portfólio",
+    "ma": "Estúdio de hedge M&A",
+    "summary": "Resumo para cliente"
+  },
+  "home": {
+    "eyebrow": "Workspace institucional de estruturação FX",
+    "headline": "Dos movimentos spot para ideias de hedge prontas para cliente.",
+    "description": "Dashboard institucional para análise de regime de mercado, tradução de exposição, seleção de estruturas, análise de payoff e comunicação multilíngue com clientes.",
+    "marketCard": "Dados FX live ou demo, tendências spot, volatilidade realizada e Market Pulse.",
+    "structureCard": "Recomendações alinhadas com objetivo, restrições e suitability.",
+    "payoffCard": "Pricing Garman-Kohlhagen, Greeks e comparação de cenários de payoff.",
+    "summaryCard": "Explicações técnicas e amigáveis ao cliente nos principais idiomas institucionais."
+  },
+  "market": {
+    "title": "Cockpit de Mercado",
+    "subtitle": "Spot, volatilidade realizada, intuição de carry e regime de mercado nos principais pares FX.",
+    "news": "Market Pulse",
+    "liveStatus": "Status do feed ao vivo"
+  },
+  "exposure": {
+    "title": "Client Exposure Translator",
+    "subtitle": "Transforma direção de fluxo e restrições do cliente em diagnóstico de exposição e universo de produto relevante.",
+    "action": "Traduzir exposição"
+  },
+  "structures": {
+    "title": "Structure Recommender",
+    "subtitle": "Estruturas de hedge relevantes com racional para cliente, sales, trading e risk control.",
+    "whyThisTrades": "Por que esta estrutura faz sentido"
+  },
+  "payoff": {
+    "title": "Laboratório de Payoff",
+    "subtitle": "Pricing interativo de opções FX, Greeks e comparações simplificadas de payoff."
+  },
+  "portfolio": {
+    "title": "Risco FX de portfólio",
+    "subtitle": "Concentrações de exposição, efeitos de diversificação e risco residual de hedge."
+  },
+  "ma": {
+    "title": "M&A Deal-Contingent Hedge Studio",
+    "subtitle": "Análise de hedge condicional para execução de operações cross-border e risco de breakage."
+  },
+  "summary": {
+    "title": "Resumo multilíngue para cliente",
+    "subtitle": "Enquadramento técnico e amigável ao cliente para notas de hedge prontas para distribuição.",
+    "technical": "Explicação técnica",
+    "client": "Explicação para o cliente",
+    "emailReady": "Resumo pronto para e-mail",
+    "riskWarning": "Aviso de risco"
+  }
+}

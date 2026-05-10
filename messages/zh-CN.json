@@ -1,0 +1,63 @@
+{
+  "app": {
+    "name": "FX Structuring Copilot",
+    "codename": "FXStructuringLag",
+    "tagline": "在一个多语言结构化驾驶舱中整合市场数据、收益分析和面向客户的外汇对冲方案。",
+    "disclaimer": "仅供教育演示之用，不构成投资建议。价格、收益、概率、Greeks 和风险指标均为示意值，并非可执行市场报价。启用实时数据时，数据来自第三方，可能延迟、不完整或不可用。"
+  },
+  "nav": {
+    "home": "主页",
+    "market": "市场驾驶舱",
+    "exposure": "敞口翻译器",
+    "structures": "结构推荐",
+    "payoffLab": "收益实验室",
+    "portfolio": "组合外汇风险",
+    "ma": "并购对冲工作台",
+    "summary": "客户摘要"
+  },
+  "home": {
+    "eyebrow": "机构级外汇结构化工作台",
+    "headline": "从即期波动走向面向客户的对冲方案。",
+    "description": "用于市场状态分析、客户敞口翻译、结构筛选、收益分析和多语言客户沟通的机构级仪表盘。",
+    "marketCard": "实时或演示 FX 数据、即期趋势、已实现波动率和 Market Pulse。",
+    "structureCard": "与目标、约束和适当性一致的结构建议。",
+    "payoffCard": "Garman-Kohlhagen 定价、Greeks 和情景收益比较。",
+    "summaryCard": "以主要机构客户语言提供技术版和客户友好版说明。"
+  },
+  "market": {
+    "title": "市场驾驶舱",
+    "subtitle": "覆盖主要货币对的即期、已实现波动率、carry 直觉和市场状态。",
+    "news": "Market Pulse",
+    "liveStatus": "实时数据状态"
+  },
+  "exposure": {
+    "title": "Client Exposure Translator",
+    "subtitle": "将客户现金流方向和约束条件转换为敞口诊断与相关产品范围。",
+    "action": "转换敞口"
+  },
+  "structures": {
+    "title": "Structure Recommender",
+    "subtitle": "给出相关对冲结构，并从客户、销售、交易和风险控制角度说明理由。",
+    "whyThisTrades": "为什么适合这笔交易"
+  },
+  "payoff": {
+    "title": "收益实验室",
+    "subtitle": "交互式外汇期权定价、Greeks 和简化结构收益比较。"
+  },
+  "portfolio": {
+    "title": "组合外汇风险",
+    "subtitle": "敞口集中度、分散化效果和剩余对冲风险。"
+  },
+  "ma": {
+    "title": "M&A Deal-Contingent Hedge Studio",
+    "subtitle": "跨境并购执行中的条件式对冲与 breakage risk 分析。"
+  },
+  "summary": {
+    "title": "多语言客户摘要",
+    "subtitle": "用于分发级对冲说明的技术版与客户友好版表述。",
+    "technical": "技术说明",
+    "client": "客户友好说明",
+    "emailReady": "可直接用于邮件的摘要",
+    "riskWarning": "风险提示"
+  }
+}

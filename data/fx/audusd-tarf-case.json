@@ -1,0 +1,7 @@
+{
+  "pair": "AUDUSD",
+  "strike": 0.7,
+  "leverage": 2,
+  "monthlyFixings": 7,
+  "riskWarning": "If the underlying USD receivable disappears, the hedge can become a speculative obligation. Add cashflow integrity monitoring and early-exit triggers."
+}

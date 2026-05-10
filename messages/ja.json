@@ -1,0 +1,63 @@
+{
+  "app": {
+    "name": "FX Structuring Copilot",
+    "codename": "FXStructuringLag",
+    "tagline": "市場データ、ペイオフ分析、顧客向けFXヘッジ案を1つの多言語ストラクチャリング・コックピットに集約。",
+    "disclaimer": "教育用プロトタイプです。投資助言ではありません。価格、ペイオフ、確率、Greeks、リスク指標はすべて例示であり、執行可能な市場クオートではありません。ライブフィードを有効化した場合でも第三者データであり、遅延、不完全、または利用不可の可能性があります。"
+  },
+  "nav": {
+    "home": "ホーム",
+    "market": "マーケット・コックピット",
+    "exposure": "エクスポージャー翻訳",
+    "structures": "ストラクチャー提案",
+    "payoffLab": "ペイオフ・ラボ",
+    "portfolio": "ポートフォリオFXリスク",
+    "ma": "M&Aヘッジ・スタジオ",
+    "summary": "顧客サマリー"
+  },
+  "home": {
+    "eyebrow": "機関投資家向けFXストラクチャリング・ワークスペース",
+    "headline": "スポット変動から顧客向けヘッジ案へ。",
+    "description": "市場レジーム分析、顧客エクスポージャー翻訳、ストラクチャー選定、ペイオフ分析、多言語顧客コミュニケーションのための機関投資家向けダッシュボードです。",
+    "marketCard": "ライブまたはデモのFXデータ、スポットトレンド、実現ボラティリティ、Market Pulse。",
+    "structureCard": "目的、制約、suitability に沿った提案。",
+    "payoffCard": "Garman-Kohlhagen 価格評価、Greeks、シナリオ別ペイオフ比較。",
+    "summaryCard": "主要な機関投資家言語でのテクニカル説明と顧客向け説明。"
+  },
+  "market": {
+    "title": "マーケット・コックピット",
+    "subtitle": "主要FXペアのスポット、実現ボラティリティ、carry の直感、マーケット・レジームを表示。",
+    "news": "Market Pulse",
+    "liveStatus": "ライブフィード状況"
+  },
+  "exposure": {
+    "title": "Client Exposure Translator",
+    "subtitle": "顧客のキャッシュフロー方向と制約を、エクスポージャー診断と関連商品群に変換します。",
+    "action": "エクスポージャーを変換"
+  },
+  "structures": {
+    "title": "Structure Recommender",
+    "subtitle": "顧客、セールス、トレーディング、リスク管理の観点から関連ヘッジ案を提示します。",
+    "whyThisTrades": "この提案が機能する理由"
+  },
+  "payoff": {
+    "title": "ペイオフ・ラボ",
+    "subtitle": "インタラクティブなFXオプション価格評価、Greeks、簡易ストラクチャー・ペイオフ比較。"
+  },
+  "portfolio": {
+    "title": "ポートフォリオFXリスク",
+    "subtitle": "エクスポージャー集中、分散効果、残存ヘッジリスク。"
+  },
+  "ma": {
+    "title": "M&A Deal-Contingent Hedge Studio",
+    "subtitle": "クロスボーダー案件の実行と breakage risk に対する条件付きヘッジ分析。"
+  },
+  "summary": {
+    "title": "多言語顧客サマリー",
+    "subtitle": "配布可能なヘッジメモのためのテクニカル説明と顧客向け説明。",
+    "technical": "テクニカル説明",
+    "client": "顧客向け説明",
+    "emailReady": "メール用サマリー",
+    "riskWarning": "リスク警告"
+  }
+}

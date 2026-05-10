@@ -1,0 +1,63 @@
+{
+  "app": {
+    "name": "FX Structuring Copilot",
+    "codename": "FXStructuringLag",
+    "tagline": "Données de marché, analyse des payoffs et idées de couverture FX prêtes pour le client dans un cockpit de structuration multilingue.",
+    "disclaimer": "Prototype pédagogique uniquement. Aucun conseil en investissement. Les prix, payoffs, probabilités, Greeks et mesures de risque sont illustratifs et ne constituent pas des cotations exécutables. Les flux live, lorsqu'ils sont activés, proviennent de tiers et peuvent être retardés, incomplets ou indisponibles."
+  },
+  "nav": {
+    "home": "Accueil",
+    "market": "Cockpit Marché",
+    "exposure": "Traducteur d'exposition",
+    "structures": "Recommandation de structures",
+    "payoffLab": "Laboratoire Payoff",
+    "portfolio": "Risque FX du portefeuille",
+    "ma": "Studio de couverture M&A",
+    "summary": "Synthèse client"
+  },
+  "home": {
+    "eyebrow": "Poste de travail de structuration FX institutionnel",
+    "headline": "Passer des mouvements spot à des idées de couverture prêtes pour le client.",
+    "description": "Tableau de bord institutionnel pour l'analyse de régime de marché, la traduction de l'exposition, la sélection de structures, l'analyse des payoffs et la communication client multilingue.",
+    "marketCard": "Données FX live ou démo, tendances spot, volatilité réalisée et Market Pulse.",
+    "structureCard": "Recommandations alignées avec l'objectif, les contraintes et la suitability.",
+    "payoffCard": "Pricing Garman-Kohlhagen, Greeks et comparaison des scénarios de payoff.",
+    "summaryCard": "Explications techniques et pédagogiques dans les principales langues institutionnelles."
+  },
+  "market": {
+    "title": "Cockpit Marché",
+    "subtitle": "Spot, volatilité réalisée, intuition de carry et régime de marché sur les principales paires FX.",
+    "news": "Market Pulse",
+    "liveStatus": "Statut du flux live"
+  },
+  "exposure": {
+    "title": "Client Exposure Translator",
+    "subtitle": "Transforme la direction des flux et les contraintes du client en diagnostic d'exposition et en univers produit pertinent.",
+    "action": "Traduire l'exposition"
+  },
+  "structures": {
+    "title": "Structure Recommender",
+    "subtitle": "Structures de couverture pertinentes avec justification client, sales, trading et risk control.",
+    "whyThisTrades": "Pourquoi cette structure fonctionne"
+  },
+  "payoff": {
+    "title": "Laboratoire Payoff",
+    "subtitle": "Pricing interactif d'options FX, Greeks et comparaisons simplifiées de payoffs."
+  },
+  "portfolio": {
+    "title": "Risque FX du portefeuille",
+    "subtitle": "Concentrations d'exposition, effets de diversification et risque résiduel après couverture."
+  },
+  "ma": {
+    "title": "M&A Deal-Contingent Hedge Studio",
+    "subtitle": "Analyse de couverture conditionnelle pour l'exécution d'opérations transfrontalières et le risque de breakage."
+  },
+  "summary": {
+    "title": "Synthèse client multilingue",
+    "subtitle": "Formulation technique et pédagogique pour des notes de couverture prêtes à être diffusées.",
+    "technical": "Explication technique",
+    "client": "Explication orientée client",
+    "emailReady": "Résumé prêt pour e-mail",
+    "riskWarning": "Avertissement de risque"
+  }
+}

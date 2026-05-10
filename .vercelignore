@@ -1,0 +1,7 @@
+.git
+.next
+.pnpm-home
+.pnpm-store
+node_modules
+pnpm.exe
+*.log
