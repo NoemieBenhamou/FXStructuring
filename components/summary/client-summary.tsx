@@ -55,7 +55,7 @@ const computedSurfaceClassName = "rounded-2xl border border-bank-border/70 bg-ba
 
 export function ClientSummary({ locale }: { locale: string }) {
   const copy = getClientSummaryCopy(locale);
-  const [activeView, setActiveView] = useState<"summary" | "tarf">("summary");
+  const [activeView, setActiveView] = useState<"summary" | "tarf">("tarf");
   const [form, setForm] = useState<TarfTermSheetForm>(() => getDefaultTarfForm());
   const computedForm = useMemo(() => {
     const tradeDate = parseIsoDate(form.tradeDate) ?? addBusinessDays(new Date(), 2);
@@ -122,18 +122,18 @@ export function ClientSummary({ locale }: { locale: string }) {
         <CardContent className="flex flex-col gap-4 py-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap gap-3">
             <Button
-              variant={activeView === "summary" ? "primary" : "secondary"}
-              onClick={() => setActiveView("summary")}
-              title="Open the distribution-facing summary."
-            >
-              Client Summary
-            </Button>
-            <Button
               variant={activeView === "tarf" ? "primary" : "secondary"}
               onClick={() => setActiveView("tarf")}
               title="Open the TARF input form and indicative term sheet."
             >
               TARF
+            </Button>
+            <Button
+              variant={activeView === "summary" ? "primary" : "secondary"}
+              onClick={() => setActiveView("summary")}
+              title="Open the distribution-facing summary."
+            >
+              Client Summary
             </Button>
           </div>
           <Button
@@ -147,10 +147,18 @@ export function ClientSummary({ locale }: { locale: string }) {
 
       {activeView === "summary" ? (
         <>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <MetricCard label="Reference pair" value={form.currencyPair} />
-            <MetricCard label="Indicative strike" value={computedForm.strikeRate.replace("K = ", "")} />
-            <MetricCard label="Leverage factor" value={computedForm.leverageFactor} />
+          <div className="grid gap-4 xl:grid-cols-[1.45fr_0.8fr_0.8fr]">
+            <Card className="rounded-3xl">
+              <CardContent className="space-y-3 py-5">
+                <FxPairSelector
+                  pair={form.currencyPair}
+                  onPairChange={(pair) => updateField("currencyPair", pair)}
+                  label="Reference pair"
+                />
+              </CardContent>
+            </Card>
+            <SummaryMetricCard label="Indicative strike" value={computedForm.strikeRate.replace("K = ", "")} />
+            <SummaryMetricCard label="Leverage factor" value={computedForm.leverageFactor} />
           </div>
 
           <div className="grid gap-6 xl:grid-cols-2">
@@ -340,7 +348,7 @@ export function ClientSummary({ locale }: { locale: string }) {
   );
 }
 
-function MetricCard({ label, value }: { label: string; value: string }) {
+function SummaryMetricCard({ label, value }: { label: string; value: string }) {
   return (
     <Card className="rounded-3xl">
       <CardContent className="space-y-2 py-5">
