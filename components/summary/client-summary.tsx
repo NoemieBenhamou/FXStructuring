@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { FxPairSelector } from "@/components/common/fx-pair-selector";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -48,6 +49,9 @@ const computedFields = new Set<TermSheetFieldKey>(["finalExpiryDate", "finalSett
 const numericFields = new Set<TermSheetFieldKey>(["numberOfFixings", "settlementPeriodDays"]);
 const frequencyOptions = ["Weekly", "Monthly"] as const;
 const referenceSources = ["Reuters", "BFIX", "Bloomberg", "Other"] as const;
+const editableControlClassName = "border-bank-cyan/50 bg-bank-cyan/10 focus:border-bank-cyan";
+const editableSurfaceClassName = "rounded-2xl border border-bank-cyan/35 bg-bank-cyan/5 p-3";
+const computedSurfaceClassName = "rounded-2xl border border-bank-border/70 bg-bank-bgAlt/60 px-4 py-3 text-sm leading-6 text-bank-text";
 
 export function ClientSummary({ locale }: { locale: string }) {
   const copy = getClientSummaryCopy(locale);
@@ -195,6 +199,16 @@ export function ClientSummary({ locale }: { locale: string }) {
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
+              <div className="flex flex-wrap gap-3 rounded-2xl border border-bank-border/70 bg-bank-bgAlt/45 px-4 py-3 text-xs text-bank-muted">
+                <div className="inline-flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-full border border-bank-cyan/50 bg-bank-cyan/20" />
+                  Fields in blue are user inputs
+                </div>
+                <div className="inline-flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-full border border-bank-border bg-bank-bgAlt/80" />
+                  Darker boxes are computed outputs
+                </div>
+              </div>
               {tarfTermSheetSections.map((section) => (
                 <div key={section.title} className="space-y-4">
                   <div className="text-xs uppercase tracking-[0.24em] text-bank-gold">{section.title}</div>
@@ -208,24 +222,37 @@ export function ClientSummary({ locale }: { locale: string }) {
 
                       return (
                         <label key={field.key} className={wide ? "space-y-2 md:col-span-2" : "space-y-2"}>
-                          <span className="text-[11px] uppercase tracking-[0.18em] text-bank-muted">{field.label}</span>
-                          {computedFields.has(field.key) ? (
-                            <div className="rounded-2xl border border-bank-border bg-bank-bgAlt/60 px-4 py-3 text-sm leading-6 text-bank-text">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-[11px] uppercase tracking-[0.18em] text-bank-muted">{field.label}</span>
+                            {computedFields.has(field.key) ? (
+                              <span className="text-[10px] uppercase tracking-[0.18em] text-bank-muted">Output</span>
+                            ) : (
+                              <span className="text-[10px] uppercase tracking-[0.18em] text-cyan-200">Input</span>
+                            )}
+                          </div>
+                          {field.key === "currencyPair" ? (
+                            <FxPairSelector pair={form.currencyPair} onPairChange={(pair) => updateField("currencyPair", pair)} label="" tone="editable" />
+                          ) : computedFields.has(field.key) ? (
+                            <div className={computedSurfaceClassName}>
                               {value}
                             </div>
                           ) : datePickerFields.has(field.key) ? (
-                            <Input
-                              type="date"
-                              value={value}
-                              onChange={(event) => updateField(field.key, event.target.value)}
-                            />
+                            <div className={editableSurfaceClassName}>
+                              <Input
+                                className={editableControlClassName}
+                                type="date"
+                                value={value}
+                                onChange={(event) => updateField(field.key, event.target.value)}
+                              />
+                            </div>
                           ) : field.key === "fixingFrequency" ? (
-                            <div className="flex flex-wrap gap-2">
+                            <div className={`${editableSurfaceClassName} flex flex-wrap gap-2`}>
                               {frequencyOptions.map((option) => (
                                 <Button
                                   key={option}
                                   type="button"
                                   variant={form.fixingFrequency === option ? "primary" : "secondary"}
+                                  className={form.fixingFrequency === option ? undefined : "border-bank-cyan/50 bg-bank-cyan/10 text-bank-text hover:bg-bank-cyan/20"}
                                   onClick={() => updateField("fixingFrequency", option)}
                                 >
                                   {option}
@@ -233,12 +260,13 @@ export function ClientSummary({ locale }: { locale: string }) {
                               ))}
                             </div>
                           ) : field.key === "referenceSource" ? (
-                            <div className="flex flex-wrap gap-2">
+                            <div className={`${editableSurfaceClassName} flex flex-wrap gap-2`}>
                               {referenceSources.map((option) => (
                                 <Button
                                   key={option}
                                   type="button"
                                   variant={form.referenceSource === option ? "primary" : "secondary"}
+                                  className={form.referenceSource === option ? undefined : "border-bank-cyan/50 bg-bank-cyan/10 text-bank-text hover:bg-bank-cyan/20"}
                                   onClick={() => updateField("referenceSource", option)}
                                 >
                                   {option}
@@ -246,19 +274,24 @@ export function ClientSummary({ locale }: { locale: string }) {
                               ))}
                             </div>
                           ) : multiline ? (
-                            <textarea
-                              value={value}
-                              onChange={(event) => updateField(field.key, event.target.value)}
-                              rows={3}
-                              className={`${inputClassName} resize-y`}
-                            />
+                            <div className={editableSurfaceClassName}>
+                              <textarea
+                                value={value}
+                                onChange={(event) => updateField(field.key, event.target.value)}
+                                rows={3}
+                                className={`${inputClassName} ${editableControlClassName} resize-y`}
+                              />
+                            </div>
                           ) : (
-                            <Input
-                              type={numericFields.has(field.key) ? "number" : "text"}
-                              min={numericFields.has(field.key) ? 1 : undefined}
-                              value={value}
-                              onChange={(event) => updateField(field.key, event.target.value)}
-                            />
+                            <div className={editableSurfaceClassName}>
+                              <Input
+                                className={editableControlClassName}
+                                type={numericFields.has(field.key) ? "number" : "text"}
+                                min={numericFields.has(field.key) ? 1 : undefined}
+                                value={value}
+                                onChange={(event) => updateField(field.key, event.target.value)}
+                              />
+                            </div>
                           )}
                         </label>
                       );

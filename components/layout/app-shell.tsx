@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Globe2, Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
+import { MarketTicker } from "@/components/layout/market-ticker";
 import { Button } from "@/components/ui/button";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -105,6 +106,8 @@ export function AppShell({
             </nav>
           </div>
         ) : null}
+
+        <MarketTicker />
       </header>
 
       <main className="px-3 py-4 sm:px-6 sm:py-6 lg:ml-72 lg:px-8">

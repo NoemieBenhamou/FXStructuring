@@ -1,5 +1,5 @@
 import demoNews from "@/data/news/fx-news-demo.json";
-import type { MarketRange } from "@/lib/api/client";
+import type { MarketRange, MarketTickerItem } from "@/lib/api/client";
 import { CURRENCY_FILTERS, formatFxPair, normalizeFxPair } from "@/lib/constants";
 import { computePairSnapshotFromSeries, getPairSeries, hasPairSeries, type FxSeriesPoint } from "@/lib/market";
 
@@ -46,6 +46,35 @@ const CURATED_NEWS_SOURCES = [
   "DailyFX",
   "Investing.com"
 ] as const;
+
+const MARKET_TICKER_INSTRUMENTS = [
+  { symbol: "^GSPC", label: "S&P 500", group: "Index" as const },
+  { symbol: "^DJI", label: "Dow Jones", group: "Index" as const },
+  { symbol: "^IXIC", label: "Nasdaq", group: "Index" as const },
+  { symbol: "^RUT", label: "Russell 2000", group: "Index" as const },
+  { symbol: "^STOXX50E", label: "Euro Stoxx 50", group: "Index" as const },
+  { symbol: "^FTSE", label: "FTSE 100", group: "Index" as const },
+  { symbol: "^GDAXI", label: "DAX", group: "Index" as const },
+  { symbol: "^N225", label: "Nikkei 225", group: "Index" as const },
+  { symbol: "^HSI", label: "Hang Seng", group: "Index" as const },
+  { symbol: "GC=F", label: "Gold", group: "Commodity" as const },
+  { symbol: "SI=F", label: "Silver", group: "Commodity" as const },
+  { symbol: "CL=F", label: "WTI Crude", group: "Commodity" as const },
+  { symbol: "BZ=F", label: "Brent Crude", group: "Commodity" as const },
+  { symbol: "HG=F", label: "Copper", group: "Commodity" as const },
+  { symbol: "^TNX", label: "US 10Y Yield", group: "Rates" as const }
+] as const;
+
+const DEMO_MARKET_TICKER_ITEMS: MarketTickerItem[] = [
+  { symbol: "^GSPC", label: "S&P 500", group: "Index", price: 5234.9, changePercent: 0.42 },
+  { symbol: "^DJI", label: "Dow Jones", group: "Index", price: 39210.4, changePercent: 0.31 },
+  { symbol: "^IXIC", label: "Nasdaq", group: "Index", price: 16482.7, changePercent: 0.58 },
+  { symbol: "^STOXX50E", label: "Euro Stoxx 50", group: "Index", price: 5064.3, changePercent: -0.12 },
+  { symbol: "^FTSE", label: "FTSE 100", group: "Index", price: 8211.6, changePercent: 0.09 },
+  { symbol: "^N225", label: "Nikkei 225", group: "Index", price: 38452.1, changePercent: -0.44 },
+  { symbol: "GC=F", label: "Gold", group: "Commodity", price: 2358.5, changePercent: 0.67, currency: "USD" },
+  { symbol: "CL=F", label: "WTI Crude", group: "Commodity", price: 78.22, changePercent: -0.53, currency: "USD" }
+];
 
 const CURATED_NEWS_SOURCE_MATCHERS = [
   "reuters",
@@ -273,6 +302,53 @@ async function fetchGoogleNewsRss(currency: string) {
   return curateArticles(articles);
 }
 
+async function fetchYahooTickerQuotes() {
+  const symbols = MARKET_TICKER_INSTRUMENTS.map((instrument) => instrument.symbol).join(",");
+  const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(symbols)}`;
+  const response = await fetch(url, {
+    headers: { "User-Agent": "FXStructureLab/1.0" },
+    next: { revalidate: 300 }
+  });
+
+  if (!response.ok) {
+    throw new Error("Yahoo ticker quote request failed");
+  }
+
+  const json = await response.json() as {
+    quoteResponse?: {
+      result?: Array<{
+        symbol?: string;
+        regularMarketPrice?: number;
+        regularMarketChangePercent?: number;
+        currency?: string;
+      }>;
+    };
+  };
+
+  const results = json.quoteResponse?.result ?? [];
+  return MARKET_TICKER_INSTRUMENTS.flatMap((instrument) => {
+    const match = results.find((item) => item.symbol === instrument.symbol);
+    if (
+      !match ||
+      typeof match.regularMarketPrice !== "number" ||
+      typeof match.regularMarketChangePercent !== "number"
+    ) {
+      return [];
+    }
+
+    return [
+      {
+        symbol: instrument.symbol,
+        label: instrument.label,
+        group: instrument.group,
+        price: match.regularMarketPrice,
+        changePercent: match.regularMarketChangePercent,
+        currency: match.currency
+      } satisfies MarketTickerItem
+    ];
+  });
+}
+
 export async function getMarketData(pair: string, options?: { range?: MarketRange; startDate?: string; endDate?: string }) {
   const normalizedPair = normalizeFxPair(pair);
   const range = options?.range ?? "2Y";
@@ -398,6 +474,25 @@ export async function getFxNews(currency: string) {
       source: "Static demo news",
       refreshedAt: new Date().toISOString(),
       articles: demoNews.articles.filter((article) => article.tags.includes(normalizedCurrency) || normalizedCurrency === "FX")
+    };
+  }
+}
+
+export async function getMarketTicker() {
+  try {
+    const items = await fetchYahooTickerQuotes();
+    return {
+      mode: "live" as const,
+      source: "Yahoo Finance quote API",
+      refreshedAt: new Date().toISOString(),
+      items
+    };
+  } catch {
+    return {
+      mode: "demo" as const,
+      source: "Static market ticker fallback",
+      refreshedAt: new Date().toISOString(),
+      items: DEMO_MARKET_TICKER_ITEMS
     };
   }
 }

@@ -53,6 +53,22 @@ export type FxNewsResponse = {
   articles: FxNewsArticle[];
 };
 
+export type MarketTickerItem = {
+  symbol: string;
+  label: string;
+  group: "Index" | "Commodity" | "Rates";
+  price: number;
+  changePercent: number;
+  currency?: string;
+};
+
+export type MarketTickerResponse = {
+  mode: "demo" | "live";
+  source: string;
+  refreshedAt: string;
+  items: MarketTickerItem[];
+};
+
 export async function fetchMarketData(pair: string, options?: { range?: MarketRange; startDate?: string; endDate?: string }) {
   const params = new URLSearchParams({ pair });
   if (options?.range) params.set("range", options.range);
@@ -74,4 +90,10 @@ export async function fetchFxNews(currency: string) {
   const response = await fetch(`/api/news/fx?currency=${encodeURIComponent(currency)}`, { cache: "no-store" });
   if (!response.ok) throw new Error("Failed to fetch FX news");
   return response.json() as Promise<FxNewsResponse>;
+}
+
+export async function fetchMarketTicker() {
+  const response = await fetch("/api/market/ticker", { cache: "no-store" });
+  if (!response.ok) throw new Error("Failed to fetch market ticker");
+  return response.json() as Promise<MarketTickerResponse>;
 }

@@ -5,17 +5,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { formatFxPair, MAJOR_FX_PAIRS, normalizeFxPair, OTHER_SUPPORTED_FX_PAIRS } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 type FxPairSelectorProps = {
   pair: string;
   onPairChange: (pair: string) => void;
   label?: string;
+  tone?: "default" | "editable";
 };
 
 export function FxPairSelector({
   pair,
   onPairChange,
-  label = "Currency pair"
+  label = "Currency pair",
+  tone = "default"
 }: FxPairSelectorProps) {
   const normalizedPair = normalizeFxPair(pair);
   const isListedPair =
@@ -44,48 +47,57 @@ export function FxPairSelector({
     }
   }
 
+  const editable = tone === "editable";
+  const selectClassName = editable ? "border-bank-cyan/50 bg-bank-cyan/10 focus:border-bank-cyan" : undefined;
+  const inputClassName = editable ? "border-bank-cyan/50 bg-bank-cyan/10 focus:border-bank-cyan" : undefined;
+  const surfaceClassName = editable ? "rounded-2xl border border-bank-cyan/35 bg-bank-cyan/5 p-3" : undefined;
+
   return (
     <div className="grid gap-1.5">
-      <span className="text-xs uppercase tracking-[0.2em] text-bank-muted">{label}</span>
-      <div className="grid gap-3 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start">
-        <Select
-          value={selectedPair}
-          onChange={(event) => {
-            const value = event.target.value;
-            setSelectedPair(value);
-            if (value !== "__custom__") {
-              onPairChange(value);
-            }
-          }}
-        >
-          <optgroup label="Major crosses">
-            {MAJOR_FX_PAIRS.map((item) => (
-              <option key={item} value={item}>
-                {formatFxPair(item)}
-              </option>
-            ))}
-          </optgroup>
-          <optgroup label="Other supported crosses">
-            {OTHER_SUPPORTED_FX_PAIRS.map((item) => (
-              <option key={item} value={item}>
-                {formatFxPair(item)}
-              </option>
-            ))}
-          </optgroup>
-          <option value="__custom__">Other cross...</option>
-        </Select>
-        {selectedPair === "__custom__" ? (
-          <div className="flex gap-2">
-            <Input
-              value={customPair}
-              placeholder="Type EUR/TRY or NOKSEK"
-              onChange={(event) => setCustomPair(event.target.value.toUpperCase())}
-            />
-            <Button type="button" onClick={submitCustomPair}>
-              Load
-            </Button>
-          </div>
-        ) : null}
+      {label ? <span className="text-xs uppercase tracking-[0.2em] text-bank-muted">{label}</span> : null}
+      <div className={cn(surfaceClassName)}>
+        <div className="grid gap-3 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start">
+          <Select
+            className={selectClassName}
+            value={selectedPair}
+            onChange={(event) => {
+              const value = event.target.value;
+              setSelectedPair(value);
+              if (value !== "__custom__") {
+                onPairChange(value);
+              }
+            }}
+          >
+            <optgroup label="Major crosses">
+              {MAJOR_FX_PAIRS.map((item) => (
+                <option key={item} value={item}>
+                  {formatFxPair(item)}
+                </option>
+              ))}
+            </optgroup>
+            <optgroup label="Other supported crosses">
+              {OTHER_SUPPORTED_FX_PAIRS.map((item) => (
+                <option key={item} value={item}>
+                  {formatFxPair(item)}
+                </option>
+              ))}
+            </optgroup>
+            <option value="__custom__">Other cross...</option>
+          </Select>
+          {selectedPair === "__custom__" ? (
+            <div className="flex gap-2">
+              <Input
+                className={inputClassName}
+                value={customPair}
+                placeholder="Type EUR/TRY or NOKSEK"
+                onChange={(event) => setCustomPair(event.target.value.toUpperCase())}
+              />
+              <Button className={editable ? "border border-bank-cyan/50 bg-bank-cyan/10 text-bank-text hover:bg-bank-cyan/20" : undefined} type="button" onClick={submitCustomPair}>
+                Load
+              </Button>
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );
