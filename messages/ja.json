@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "FX Structuring Copilot",
-    "codename": "FXStructuringLag",
+    "name": "FX Structure LAB",
+    "codename": "FXStructureLab",
     "tagline": "市場データ、ペイオフ分析、顧客向けFXヘッジ案を1つの多言語ストラクチャリング・コックピットに集約。",
     "disclaimer": "教育用プロトタイプです。投資助言ではありません。価格、ペイオフ、確率、Greeks、リスク指標はすべて例示であり、執行可能な市場クオートではありません。ライブフィードを有効化した場合でも第三者データであり、遅延、不完全、または利用不可の可能性があります。"
   },

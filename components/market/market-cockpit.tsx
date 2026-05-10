@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Activity, ChartColumnBig, Newspaper, RadioTower } from "lucide-react";
+import { Activity, ChartColumnBig, Newspaper } from "lucide-react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { type MarketDataResponse, type MarketRange, fetchMarketData } from "@/lib/api/client";
 import { MetricCard } from "@/components/common/metric-card";
@@ -29,6 +29,25 @@ function standardDeviation(values: number[], mean: number) {
   return Math.sqrt(variance);
 }
 
+function formatMarketSourceLabel(source: string) {
+  if (source.includes("Yahoo Finance")) return "Source! Yahoo Finance";
+  if (source.includes("Static fallback")) return "Source! Static fallback";
+  return source;
+}
+
+function getVolatilityRegime(rv20: number, rv60: number) {
+  if (rv60 <= 0) {
+    return { label: "Volatility regime: establishing", variant: "amber" as const };
+  }
+  if (rv20 > rv60 * 1.2) {
+    return { label: "Volatility regime: elevated", variant: "red" as const };
+  }
+  if (rv20 < rv60 * 0.8) {
+    return { label: "Volatility regime: compressed", variant: "green" as const };
+  }
+  return { label: "Volatility regime: neutral", variant: "blue" as const };
+}
+
 export function MarketCockpit({ initialPair = "EURUSD" }: { initialPair?: string }) {
   const [pair, setPair] = useState(initialPair);
   const [selectedPair, setSelectedPair] = useState(initialPair);
@@ -43,13 +62,17 @@ export function MarketCockpit({ initialPair = "EURUSD" }: { initialPair?: string
   });
   const [maPeriodInput, setMaPeriodInput] = useState("20");
   const [volatilityPeriodInput, setVolatilityPeriodInput] = useState("20");
-  const [showMovingAverage, setShowMovingAverage] = useState(true);
-  const [showBollingerBands, setShowBollingerBands] = useState(true);
+  const [showMovingAverage, setShowMovingAverage] = useState(false);
+  const [showBollingerBands, setShowBollingerBands] = useState(false);
   const [marketData, setMarketData] = useState<MarketDataResponse | null>(null);
 
   const snapshot = marketData?.snapshot;
   const maPeriod = useMemo(() => parseLookbackPeriod(maPeriodInput, 20), [maPeriodInput]);
   const volatilityPeriod = useMemo(() => parseLookbackPeriod(volatilityPeriodInput, 20), [volatilityPeriodInput]);
+  const volatilityRegime = useMemo(() => {
+    if (!snapshot) return null;
+    return getVolatilityRegime(snapshot.rv20, snapshot.rv60);
+  }, [snapshot]);
   const spotChartSeries = useMemo(() => {
     const series = snapshot?.series ?? [];
 
@@ -140,14 +163,9 @@ export function MarketCockpit({ initialPair = "EURUSD" }: { initialPair?: string
     <div className="space-y-6">
       <Card className="rounded-3xl">
         <CardContent className="flex flex-col gap-4 py-5 lg:flex-row lg:items-center lg:justify-between">
-          <div className="space-y-2">
+          <div className="grid gap-3 lg:min-w-[360px]">
             <div className="text-xs uppercase tracking-[0.22em] text-bank-gold">Pair selection</div>
-            <div className="max-w-md text-sm text-bank-muted">
-              Review major crosses first, then switch to any other supported cross or type a custom six-letter FX pair.
-            </div>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-[320px_auto] sm:items-start">
-            <div className="grid gap-3">
+            <div className="grid gap-3 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start">
               <Select
                 value={selectedPair}
                 onChange={(event) => {
@@ -184,10 +202,6 @@ export function MarketCockpit({ initialPair = "EURUSD" }: { initialPair?: string
                   <Button onClick={submitCustomPair}>Load</Button>
                 </div>
               ) : null}
-            </div>
-            <div className="flex items-center gap-2 text-sm text-bank-muted">
-              <RadioTower className="h-4 w-4" />
-              {marketData.status}
             </div>
           </div>
         </CardContent>
@@ -247,17 +261,6 @@ export function MarketCockpit({ initialPair = "EURUSD" }: { initialPair?: string
             </CardContent>
           </Card>
 
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <MetricCard label="Spot" value={snapshot.spot} decimals={snapshot.spot > 10 ? 3 : 5} />
-            <MetricCard label="1D Move" value={snapshot.oneDayMove} suffix="%" tone={snapshot.oneDayMove >= 0 ? "positive" : "negative"} />
-            <MetricCard label="1M Move" value={snapshot.oneMonthMove} suffix="%" tone={snapshot.oneMonthMove >= 0 ? "positive" : "negative"} />
-            <MetricCard label="3M Move" value={snapshot.threeMonthMove} suffix="%" tone={snapshot.threeMonthMove >= 0 ? "positive" : "negative"} />
-            <MetricCard label="20D RV" value={snapshot.rv20} suffix="%" />
-            <MetricCard label="60D RV" value={snapshot.rv60} suffix="%" />
-            <MetricCard label="2Y High" value={snapshot.high252} decimals={snapshot.spot > 10 ? 3 : 5} />
-            <MetricCard label="Drawdown vs High" value={snapshot.drawdownFromHigh} suffix="%" tone={snapshot.drawdownFromHigh >= 0 ? "positive" : "negative"} />
-          </div>
-
           <div className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
             <Card className="rounded-3xl">
               <CardHeader>
@@ -265,7 +268,8 @@ export function MarketCockpit({ initialPair = "EURUSD" }: { initialPair?: string
                   <CardTitle>{formatFxPair(snapshot.pair)} spot history</CardTitle>
                   <div className="flex flex-wrap items-center gap-2">
                     <Badge variant="gold">{snapshot.regime}</Badge>
-                    <Badge variant="blue">{marketData.source}</Badge>
+                    {volatilityRegime ? <Badge variant={volatilityRegime.variant}>{volatilityRegime.label}</Badge> : null}
+                    <Badge variant="blue">{formatMarketSourceLabel(marketData.source)}</Badge>
                   </div>
                 </div>
               </CardHeader>
@@ -282,7 +286,7 @@ export function MarketCockpit({ initialPair = "EURUSD" }: { initialPair?: string
                     />
                   </label>
                   <label className="grid gap-1.5">
-                    <span className="text-xs uppercase tracking-[0.2em] text-bank-muted">Volatility / Bollinger period</span>
+                    <span className="text-xs uppercase tracking-[0.2em] text-bank-muted">Volatility period</span>
                     <Input
                       type="number"
                       min={2}
@@ -351,6 +355,7 @@ export function MarketCockpit({ initialPair = "EURUSD" }: { initialPair?: string
                     <Activity className="h-4 w-4 text-bank-gold" />
                     Regime: {snapshot.regime}
                   </div>
+                  {volatilityRegime ? <div>Vol regime: {volatilityRegime.label.replace("Volatility regime: ", "")}</div> : null}
                   <div>Valuation date: {valuationDate}</div>
                   <div>Last close: {snapshot.lastDate}</div>
                   <div>Range context: {formatPercent(((snapshot.spot - snapshot.low252) / snapshot.low252) * 100)}</div>
@@ -358,29 +363,18 @@ export function MarketCockpit({ initialPair = "EURUSD" }: { initialPair?: string
               </CardContent>
             </Card>
 
-            <NewsFeed currency={snapshot.pair.slice(0, 3)} />
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
+              <MetricCard label="Spot" value={snapshot.spot} decimals={snapshot.spot > 10 ? 3 : 5} />
+              <MetricCard label="1D Move" value={snapshot.oneDayMove} suffix="%" tone={snapshot.oneDayMove >= 0 ? "positive" : "negative"} />
+              <MetricCard label="1M Move" value={snapshot.oneMonthMove} suffix="%" tone={snapshot.oneMonthMove >= 0 ? "positive" : "negative"} />
+              <MetricCard label="3M Move" value={snapshot.threeMonthMove} suffix="%" tone={snapshot.threeMonthMove >= 0 ? "positive" : "negative"} />
+              <MetricCard label="20D RV" value={snapshot.rv20} suffix="%" />
+              <MetricCard label="60D RV" value={snapshot.rv60} suffix="%" />
+              <MetricCard label="2Y High" value={snapshot.high252} decimals={snapshot.spot > 10 ? 3 : 5} />
+              <MetricCard label="Drawdown vs High" value={snapshot.drawdownFromHigh} suffix="%" tone={snapshot.drawdownFromHigh >= 0 ? "positive" : "negative"} />
+            </div>
           </div>
 
-          <Card className="rounded-3xl">
-            <CardHeader>
-              <div className="flex items-center justify-between gap-3">
-                <CardTitle>Realized volatility ladder</CardTitle>
-                <Badge variant="blue">{marketData.source}</Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="h-[320px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={snapshot.volSeries} margin={{ top: 10, right: 8, left: -12, bottom: 0 }}>
-                  <CartesianGrid stroke="#163452" strokeDasharray="4 4" />
-                  <XAxis dataKey="date" minTickGap={32} tick={{ fill: "#CBD5E1", fontSize: 11 }} />
-                  <YAxis tick={{ fill: "#CBD5E1", fontSize: 11 }} width={56} />
-                  <Tooltip formatter={(value) => `${Number(value).toFixed(2)}%`} />
-                  <Line type="monotone" dataKey="rv20" name="20D RV" stroke="#C8A45D" strokeWidth={2.2} dot={false} />
-                  <Line type="monotone" dataKey="rv60" name="60D RV" stroke="#38A3C7" strokeWidth={2.2} dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
         </>
       ) : (
         <NewsFeed currency="FX" showFilters />

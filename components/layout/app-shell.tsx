@@ -4,9 +4,7 @@ import { useState } from "react";
 import { Globe2, Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +15,6 @@ const navKeys = [
   ["structures", "/structures"],
   ["payoffLab", "/payoff-lab"],
   ["portfolio", "/portfolio"],
-  ["ma", "/ma"],
   ["summary", "/summary"]
 ] as const;
 
@@ -42,11 +39,8 @@ export function AppShell({
     <div className="dashboard-grid min-h-screen bg-bank-grid bg-[length:44px_44px]">
       <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col lg:border-r lg:border-bank-border lg:bg-bank-bgAlt/90 lg:backdrop-blur">
         <div className="border-b border-bank-border px-6 py-6">
-          <div className="text-xs uppercase tracking-[0.24em] text-bank-gold">FXStructuringLag</div>
-          <div className="mt-2 text-2xl font-semibold text-bank-text">FX Structuring Copilot</div>
-          <div className="mt-3 text-sm leading-6 text-bank-muted">
-            Market data, structure logic and client-ready narrative in one institutional workspace.
-          </div>
+          <div className="text-xs uppercase tracking-[0.24em] text-bank-gold">FX Structure LAB</div>
+          <div className="mt-2 text-2xl font-semibold text-bank-text">Institutional FX structuring workspace</div>
         </div>
         <nav className="flex-1 space-y-1 px-4 py-6">
           {navigation.map((item) => {
@@ -67,16 +61,6 @@ export function AppShell({
             );
           })}
         </nav>
-        <div className="border-t border-bank-border px-4 py-4">
-          <Card className="rounded-xl bg-bank-panel/70">
-            <div className="px-4 py-4">
-              <Badge variant="gold">Demo mode</Badge>
-              <p className="mt-3 text-sm text-bank-muted">
-                Static market history and fallback news are bundled so the Vercel deployment works without API keys.
-              </p>
-            </div>
-          </Card>
-        </div>
       </aside>
 
       <header className="sticky top-0 z-40 border-b border-bank-border bg-bank-bg/90 backdrop-blur lg:ml-72">
@@ -86,13 +70,12 @@ export function AppShell({
               {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </Button>
             <div>
-              <div className="text-xs font-semibold text-bank-text sm:text-sm">FX Structuring Copilot</div>
-              <div className="hidden text-xs uppercase tracking-[0.22em] text-bank-muted sm:block">CIB Markets Demo</div>
+              <div className="text-xs font-semibold text-bank-text sm:text-sm">FX Structure LAB</div>
+              <div className="hidden text-xs uppercase tracking-[0.22em] text-bank-muted sm:block">Institutional workspace</div>
             </div>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <Badge variant="blue" className="hidden sm:inline-flex">Live fallback ready</Badge>
             <div className="flex items-center gap-2">
               <Globe2 className="hidden h-4 w-4 text-bank-muted sm:block" />
               <LocaleSwitcher />

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { FxPairSelector } from "@/components/common/fx-pair-selector";
 import { explainExposure, type ExposureInput } from "@/lib/recommendations";
 
 const defaultInput: ExposureInput = {
@@ -48,9 +49,7 @@ export function ExposureTranslator() {
               <option value="treasuryCenter">Treasury center</option>
             </Select>
           </Field>
-          <Field label="Currency pair">
-            <Input value={input.pair} onChange={(event) => setInput({ ...input, pair: event.target.value.toUpperCase() })} />
-          </Field>
+          <FxPairSelector pair={input.pair} onPairChange={(pair) => setInput({ ...input, pair })} />
           <Field label="Direction">
             <Select value={input.direction} onChange={(event) => setInput({ ...input, direction: event.target.value as ExposureInput["direction"] })}>
               <option value="buyBase">Buys base</option>
@@ -71,7 +70,6 @@ export function ExposureTranslator() {
               <option value="improveForward">Improve forward</option>
               <option value="zeroPremium">Zero premium</option>
               <option value="upsideParticipation">Upside participation</option>
-              <option value="maConditionality">M&A conditionality</option>
               <option value="portfolioRiskReduction">Portfolio risk reduction</option>
             </Select>
           </Field>

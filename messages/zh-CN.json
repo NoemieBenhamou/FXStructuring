@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "FX Structuring Copilot",
-    "codename": "FXStructuringLag",
+    "name": "FX Structure LAB",
+    "codename": "FXStructureLab",
     "tagline": "在一个多语言结构化驾驶舱中整合市场数据、收益分析和面向客户的外汇对冲方案。",
     "disclaimer": "仅供教育演示之用，不构成投资建议。价格、收益、概率、Greeks 和风险指标均为示意值，并非可执行市场报价。启用实时数据时，数据来自第三方，可能延迟、不完整或不可用。"
   },

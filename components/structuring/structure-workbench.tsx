@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { FxPairSelector } from "@/components/common/fx-pair-selector";
 import { structureCopy } from "@/lib/content/structure-copy";
 import { recommendStructures, type ExposureInput } from "@/lib/recommendations";
 
@@ -47,16 +48,15 @@ export function StructureWorkbench() {
           <CardTitle>Structuring controls</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <Field label="Pair">
-            <Input value={input.pair} onChange={(event) => setInput({ ...input, pair: event.target.value.toUpperCase() })} />
-          </Field>
+          <div className="md:col-span-2 xl:col-span-4">
+            <FxPairSelector pair={input.pair} onPairChange={(pair) => setInput({ ...input, pair })} label="Pair" />
+          </div>
           <Field label="Objective">
             <Select value={input.objective} onChange={(event) => setInput({ ...input, objective: event.target.value as ExposureInput["objective"] })}>
               <option value="certainty">Certainty</option>
               <option value="improveForward">Improve forward</option>
               <option value="zeroPremium">Zero premium</option>
               <option value="upsideParticipation">Upside participation</option>
-              <option value="maConditionality">M&A conditionality</option>
               <option value="portfolioRiskReduction">Portfolio risk reduction</option>
             </Select>
           </Field>

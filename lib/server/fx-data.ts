@@ -190,7 +190,7 @@ function buildYahooSymbol(pair: string) {
 
 async function fetchYahooSeries(url: string, pair: string) {
   const response = await fetch(url, {
-    headers: { "User-Agent": "FXStructuringLag/1.0" },
+    headers: { "User-Agent": "FXStructureLab/1.0" },
     next: { revalidate: 3600 }
   });
 
@@ -250,7 +250,7 @@ async function fetchGoogleNewsRss(currency: string) {
   const query = buildCuratedGoogleNewsQuery(currency);
   const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`;
   const response = await fetch(rssUrl, {
-    headers: { "User-Agent": "FXStructuringLag/1.0" },
+    headers: { "User-Agent": "FXStructureLab/1.0" },
     next: { revalidate: 300 }
   });
 

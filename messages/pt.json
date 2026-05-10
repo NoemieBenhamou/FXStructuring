@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "FX Structuring Copilot",
-    "codename": "FXStructuringLag",
+    "name": "FX Structure LAB",
+    "codename": "FXStructureLab",
     "tagline": "Dados de mercado, análise de payoff e ideias de hedge FX prontas para cliente em um cockpit de estruturação multilíngue.",
     "disclaimer": "Protótipo educacional apenas. Não é aconselhamento de investimento. Preços, payoffs, probabilidades, Greeks e métricas de risco são ilustrativos e não são cotações executáveis. Os feeds ao vivo, quando ativados, são de terceiros e podem estar atrasados, incompletos ou indisponíveis."
   },

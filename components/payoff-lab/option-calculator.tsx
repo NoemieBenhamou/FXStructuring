@@ -1,11 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { FxPairSelector } from "@/components/common/fx-pair-selector";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { computePairSnapshot } from "@/lib/market";
 import { priceFxOption, type OptionType } from "@/lib/pricing/garman-kohlhagen";
 import { rangeAroundSpot } from "@/lib/pricing/chart-data";
 import { forwardPayoff, knockOutForwardPayoff, optionPayoff, riskReversalPayoff, targetForwardFixingPnl } from "@/lib/pricing/payoffs";
@@ -23,6 +25,7 @@ const SERIES = [
 ] as const satisfies ReadonlyArray<{ key: SeriesKey; label: string; stroke: string; width: number }>;
 
 export function OptionCalculator() {
+  const [pair, setPair] = useState("EURUSD");
   const [optionType, setOptionType] = useState<OptionType>("call");
   const [direction, setDirection] = useState<Direction>("buyBase");
   const [spot, setSpot] = useState(1.08);
@@ -42,6 +45,14 @@ export function OptionCalculator() {
     knockOutForward: true,
     tarf: true
   });
+
+  useEffect(() => {
+    const snapshot = computePairSnapshot(pair);
+    const decimals = snapshot.spot > 10 ? 3 : 4;
+    setSpot(snapshot.spot);
+    setStrike(Number((snapshot.spot * 1.02).toFixed(decimals)));
+    setBarrier(Number((snapshot.spot * 0.95).toFixed(decimals)));
+  }, [pair]);
 
   const result = useMemo(
     () =>
@@ -112,6 +123,12 @@ export function OptionCalculator() {
 
   return (
     <div className="space-y-6">
+      <Card className="rounded-3xl">
+        <CardContent className="py-5">
+          <FxPairSelector pair={pair} onPairChange={setPair} />
+        </CardContent>
+      </Card>
+
       <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
         <div className="hidden lg:block">
           <Controls
