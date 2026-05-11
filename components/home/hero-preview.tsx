@@ -1,8 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import demoNews from "@/data/news/fx-news-demo.json";
+import { AppTooltip } from "@/components/common/app-tooltip";
+import { darkCartesianTooltipProps } from "@/components/common/chart-tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -34,11 +37,8 @@ function getVolatilityRegime(latestVolatility: number, history: number[]) {
 
   if (latestVolatility < q25) {
     return {
-      label: "Market is Calm",
+      key: "calm" as const,
       variant: "green" as const,
-      subtitle: "Low-vol regime",
-      description:
-        "Stable market conditions, compressed risk premia, often trend-friendly but vulnerable to volatility shocks.",
       q25,
       q75
     };
@@ -46,20 +46,16 @@ function getVolatilityRegime(latestVolatility: number, history: number[]) {
 
   if (latestVolatility <= q75) {
     return {
-      label: "Normal / neutral regime",
+      key: "neutral" as const,
       variant: "blue" as const,
-      subtitle: "Medium volatility",
-      description: "Typical market environment; volatility is trading inside its interquartile range.",
       q25,
       q75
     };
   }
 
   return {
-    label: "Market is Stressed",
+    key: "stressed" as const,
     variant: "red" as const,
-    subtitle: "High-vol regime",
-    description: "Volatility is above its upper quartile and market pricing is reflecting a stressed backdrop.",
     q25,
     q75
   };
@@ -74,6 +70,7 @@ const curveDefinitions = [
 type CurveKey = (typeof curveDefinitions)[number]["key"];
 
 export function HeroPreview() {
+  const t = useTranslations("home.preview");
   const [pair, setPair] = useState("EURUSD");
   const [selectedPair, setSelectedPair] = useState("EURUSD");
   const [customPair, setCustomPair] = useState("");
@@ -155,9 +152,9 @@ export function HeroPreview() {
   );
 
   const ideaCards = [
-    { name: "Forward", note: "Budget certainty for known USD outflow." },
-    { name: "Vanilla option", note: "Preserve upside while capping worst case." },
-    { name: "Risk reversal", note: "Zero-premium protection with sold-strike trade-off." }
+    { name: t("ideas.forward.name"), note: t("ideas.forward.note") },
+    { name: t("ideas.vanilla.name"), note: t("ideas.vanilla.note") },
+    { name: t("ideas.riskReversal.name"), note: t("ideas.riskReversal.note") }
   ];
 
   function submitCustomPair() {
@@ -178,7 +175,7 @@ export function HeroPreview() {
       <Card className="rounded-3xl">
         <CardContent className="flex flex-col gap-4 py-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="grid gap-3 lg:min-w-[360px]">
-            <div className="text-xs uppercase tracking-[0.22em] text-bank-gold">Pair selection</div>
+            <div className="text-xs uppercase tracking-[0.22em] text-bank-gold">{t("pairSelection")}</div>
             <div className="grid gap-3 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start">
               <Select
                 value={selectedPair}
@@ -190,30 +187,30 @@ export function HeroPreview() {
                   }
                 }}
               >
-                <optgroup label="Major crosses">
+                <optgroup label={t("majorCrosses")}>
                   {MAJOR_FX_PAIRS.map((item) => (
                     <option key={item} value={item}>
                       {formatFxPair(item)}
                     </option>
                   ))}
                 </optgroup>
-                <optgroup label="Other supported crosses">
+                <optgroup label={t("otherSupportedCrosses")}>
                   {OTHER_SUPPORTED_FX_PAIRS.map((item) => (
                     <option key={item} value={item}>
                       {formatFxPair(item)}
                     </option>
                   ))}
                 </optgroup>
-                <option value="__custom__">Other cross...</option>
+                <option value="__custom__">{t("otherCross")}</option>
               </Select>
               {selectedPair === "__custom__" ? (
                 <div className="flex gap-2">
                   <Input
                     value={customPair}
-                    placeholder="Type EUR/TRY or NOKSEK"
+                    placeholder={t("customPairPlaceholder")}
                     onChange={(event) => setCustomPair(event.target.value.toUpperCase())}
                   />
-                  <Button onClick={submitCustomPair}>Load</Button>
+                  <Button onClick={submitCustomPair}>{t("load")}</Button>
                 </div>
               ) : null}
             </div>
@@ -226,35 +223,41 @@ export function HeroPreview() {
           <div className="border-b border-bank-border xl:border-b-0 xl:border-r">
             <div className="flex flex-wrap items-start justify-between gap-3 px-4 py-4 sm:items-center sm:px-5">
               <div>
-                <div className="text-xs uppercase tracking-[0.24em] text-bank-gold">Preview cockpit</div>
-                <div className="mt-1 text-lg font-semibold text-bank-text sm:text-xl">{snapshot.pair} selected</div>
+                <div className="text-xs uppercase tracking-[0.24em] text-bank-gold">{t("previewCockpit")}</div>
+                <div className="mt-1 text-lg font-semibold text-bank-text sm:text-xl">{t("selectedPair", { pair: snapshot.pair })}</div>
               </div>
-              <Badge variant={volatilityRegime.variant} title="Regime is derived from the latest Volatility 1 reading versus its two-year distribution.">
-                {volatilityRegime.label}
-              </Badge>
+              <AppTooltip label={t("regimeBadgeTitle")}>
+                <Badge variant={volatilityRegime.variant}>{t(`regimes.${volatilityRegime.key}.label`)}</Badge>
+              </AppTooltip>
             </div>
             <div className="grid gap-3 px-4 pb-4 sm:px-5 sm:pb-5 md:grid-cols-3 md:gap-4">
               <PreviewMetric label="Spot" value={snapshot.spot.toFixed(4)} />
-              <PreviewMetric label="Volatility 1" value={`${latestVolatility1.toFixed(2)}%`} />
+              <PreviewMetric label={t("volatility", { number: 1 })} value={`${latestVolatility1.toFixed(2)}%`} />
               <PreviewMetric label="Q25 / Q75" value={`${volatilityRegime.q25.toFixed(2)}% / ${volatilityRegime.q75.toFixed(2)}%`} />
             </div>
             <div className="grid gap-3 px-4 pb-3 sm:px-5 lg:grid-cols-3">
               <VolatilityControl
-                label="Volatility 1"
+                label={t("volatility", { number: 1 })}
+                periodLabel={t("periodLabel", { label: t("volatility", { number: 1 }) })}
+                toggleTitle={t("toggleCurveTitle", { label: t("volatility", { number: 1 }).toLowerCase() })}
                 period={volatility1PeriodInput}
                 onPeriodChange={setVolatility1PeriodInput}
                 active={visibleCurves.volatility1}
                 onToggle={() => toggleCurve("volatility1")}
               />
               <VolatilityControl
-                label="Volatility 2"
+                label={t("volatility", { number: 2 })}
+                periodLabel={t("periodLabel", { label: t("volatility", { number: 2 }) })}
+                toggleTitle={t("toggleCurveTitle", { label: t("volatility", { number: 2 }).toLowerCase() })}
                 period={volatility2PeriodInput}
                 onPeriodChange={setVolatility2PeriodInput}
                 active={visibleCurves.volatility2}
                 onToggle={() => toggleCurve("volatility2")}
               />
               <VolatilityControl
-                label="Volatility 3"
+                label={t("volatility", { number: 3 })}
+                periodLabel={t("periodLabel", { label: t("volatility", { number: 3 }) })}
+                toggleTitle={t("toggleCurveTitle", { label: t("volatility", { number: 3 }).toLowerCase() })}
                 period={volatility3PeriodInput}
                 onPeriodChange={setVolatility3PeriodInput}
                 active={visibleCurves.volatility3}
@@ -266,7 +269,7 @@ export function HeroPreview() {
                 <LineChart data={chartData} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
                   <XAxis dataKey="date" minTickGap={40} tick={{ fill: "#CBD5E1", fontSize: 10 }} />
                   <YAxis domain={chartDomain} tick={{ fill: "#CBD5E1", fontSize: 10 }} width={48} />
-                  <Tooltip formatter={(value) => `${Number(value).toFixed(2)}%`} />
+                  <Tooltip {...darkCartesianTooltipProps} formatter={(value) => `${Number(value).toFixed(2)}%`} />
                   <ReferenceLine
                     y={volatilityRegime.q25}
                     stroke="#7EE0D6"
@@ -287,7 +290,9 @@ export function HeroPreview() {
                         key={definition.key}
                         type="monotone"
                         dataKey={definition.key}
-                        name={`${definition.key.replace("volatility", "Volatility ")} realized volatility`}
+                        name={t("realizedVolatilityName", {
+                          label: t("volatility", { number: definition.key.replace("volatility", "") })
+                        })}
                         stroke={definition.color}
                         dot={false}
                         strokeWidth={2.1}
@@ -300,29 +305,31 @@ export function HeroPreview() {
             </div>
             <div className="space-y-3 px-4 pb-4 sm:px-5 sm:pb-5">
               <div className="grid gap-2 text-sm text-bank-muted sm:grid-cols-3">
-                <LegendItem color="#38A3C7" label={`Volatility 1: ${volatility1Period}-day realized volatility`} />
-                <LegendItem color="#C8A45D" label={`Volatility 2: ${volatility2Period}-day realized volatility`} />
-                <LegendItem color="#7EE0D6" label={`Volatility 3: ${volatility3Period}-day realized volatility`} />
+                <LegendItem color="#38A3C7" label={t("legend", { label: t("volatility", { number: 1 }), days: volatility1Period })} />
+                <LegendItem color="#C8A45D" label={t("legend", { label: t("volatility", { number: 2 }), days: volatility2Period })} />
+                <LegendItem color="#7EE0D6" label={t("legend", { label: t("volatility", { number: 3 }), days: volatility3Period })} />
               </div>
-              <div
-                className="rounded-2xl border border-bank-border bg-bank-bgAlt/55 px-4 py-3 text-sm text-bank-muted"
-                title="The regime is anchored to the latest Volatility 1 reading versus the two-year distribution of that same realized-volatility series."
-              >
-                <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant={volatilityRegime.variant}>{volatilityRegime.subtitle}</Badge>
-                  <span className="font-medium text-bank-text">{volatilityRegime.label}</span>
+              <AppTooltip className="block" label={t("regimeFrameworkTitle")}>
+                <div className="rounded-2xl border border-bank-border bg-bank-bgAlt/55 px-4 py-3 text-sm text-bank-muted">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge variant={volatilityRegime.variant}>{t(`regimes.${volatilityRegime.key}.subtitle`)}</Badge>
+                    <span className="font-medium text-bank-text">{t(`regimes.${volatilityRegime.key}.label`)}</span>
+                  </div>
+                  <p className="mt-2 leading-6">{t(`regimes.${volatilityRegime.key}.description`)}</p>
+                  <p className="mt-2 text-xs leading-5 text-bank-muted">
+                    {t("quantileFramework", {
+                      q25: volatilityRegime.q25.toFixed(2),
+                      q75: volatilityRegime.q75.toFixed(2)
+                    })}
+                  </p>
                 </div>
-                <p className="mt-2 leading-6">{volatilityRegime.description}</p>
-                <p className="mt-2 text-xs leading-5 text-bank-muted">
-                  Quantile framework: calm if latest Volatility 1 is below Q25 ({volatilityRegime.q25.toFixed(2)}%), neutral if between Q25 and Q75 ({volatilityRegime.q75.toFixed(2)}%), stressed if above Q75.
-                </p>
-              </div>
+              </AppTooltip>
             </div>
           </div>
 
           <div className="grid gap-4 p-4 sm:p-5">
             <div className="space-y-3">
-              <div className="text-xs uppercase tracking-[0.24em] text-bank-muted">Structure ideas</div>
+              <div className="text-xs uppercase tracking-[0.24em] text-bank-muted">{t("structureIdeas")}</div>
               {ideaCards.map((idea) => (
                 <div key={idea.name} className="rounded-2xl border border-bank-border bg-bank-bgAlt/55 px-4 py-3">
                   <div className="text-sm font-semibold text-bank-text">{idea.name}</div>
@@ -331,7 +338,7 @@ export function HeroPreview() {
               ))}
             </div>
             <div className="space-y-3">
-              <div className="text-xs uppercase tracking-[0.24em] text-bank-muted">News preview</div>
+              <div className="text-xs uppercase tracking-[0.24em] text-bank-muted">{t("newsPreview")}</div>
               {demoNews.articles.slice(0, 2).map((article) => (
                 <div key={article.title} className="rounded-2xl border border-bank-border bg-bank-bgAlt/55 px-4 py-3">
                   <div className="text-sm text-bank-text">{article.title}</div>
@@ -348,12 +355,16 @@ export function HeroPreview() {
 
 function VolatilityControl({
   label,
+  periodLabel,
+  toggleTitle,
   period,
   onPeriodChange,
   active,
   onToggle
 }: {
   label: string;
+  periodLabel: string;
+  toggleTitle: string;
   period: string;
   onPeriodChange: (value: string) => void;
   active: boolean;
@@ -361,11 +372,13 @@ function VolatilityControl({
 }) {
   return (
     <div className="space-y-2 rounded-2xl border border-bank-border bg-bank-bgAlt/40 p-3">
-      <div className="text-[11px] uppercase tracking-[0.18em] text-bank-muted">{label} period</div>
+      <div className="text-[11px] uppercase tracking-[0.18em] text-bank-muted">{periodLabel}</div>
       <Input type="number" min={5} max={252} value={period} onChange={(event) => onPeriodChange(event.target.value)} />
-      <Button variant={active ? "primary" : "secondary"} onClick={onToggle} title={`Toggle ${label.toLowerCase()} on or off.`}>
-        {label}
-      </Button>
+      <AppTooltip label={toggleTitle}>
+        <Button variant={active ? "primary" : "secondary"} onClick={onToggle}>
+          {label}
+        </Button>
+      </AppTooltip>
     </div>
   );
 }

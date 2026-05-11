@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Area, AreaChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from "recharts";
 import portfolioCase from "@/data/fx/portfolio-case.json";
+import { darkCartesianTooltipProps, darkChartTooltipProps } from "@/components/common/chart-tooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -121,7 +122,7 @@ export function PortfolioRiskPanel() {
                   stroke="#061A2D"
                   strokeWidth={3}
                 />
-                <Tooltip formatter={(value) => `${(Number(value) * 100).toFixed(1)}%`} />
+                <Tooltip {...darkChartTooltipProps} formatter={(value) => `${(Number(value) * 100).toFixed(1)}%`} />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
@@ -164,7 +165,7 @@ export function PortfolioRiskPanel() {
                 <CartesianGrid stroke="#163452" strokeDasharray="4 4" />
                 <XAxis dataKey="hedgeCost" tick={{ fill: "#CBD5E1", fontSize: 11 }} />
                 <YAxis tick={{ fill: "#CBD5E1", fontSize: 11 }} />
-                <Tooltip formatter={(value) => `${Number(value).toFixed(1)}%`} />
+                <Tooltip {...darkCartesianTooltipProps} formatter={(value) => `${Number(value).toFixed(1)}%`} />
                 <Area type="monotone" dataKey="residualCvar" stroke="#C8A45D" fill="rgba(200,164,93,0.22)" strokeWidth={2.2} />
               </AreaChart>
             </ResponsiveContainer>

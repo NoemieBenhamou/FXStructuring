@@ -7,7 +7,7 @@ export default async function MarketPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader eyebrow="FX dashboard" title={t("title")} description={t("subtitle")} />
+      <PageHeader eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")} />
       <MarketCockpit />
     </div>
   );

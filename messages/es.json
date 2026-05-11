@@ -3,7 +3,10 @@
     "name": "FX Structure LAB",
     "codename": "FXStructureLab",
     "tagline": "Datos de mercado, analítica de payoff e ideas de cobertura FX listas para cliente en un cockpit de estructuración multilingüe.",
-    "disclaimer": "Prototipo educativo únicamente. No es asesoramiento de inversión. Los precios, payoffs, probabilidades, Greeks y métricas de riesgo son ilustrativos y no son cotizaciones ejecutables. Los feeds en vivo, cuando están habilitados, provienen de terceros y pueden estar retrasados, incompletos o no disponibles."
+    "disclaimer": "Prototipo educativo únicamente. No es asesoramiento de inversión. Los precios, payoffs, probabilidades, Greeks y métricas de riesgo son ilustrativos y no son cotizaciones ejecutables. Los feeds en vivo, cuando están habilitados, provienen de terceros y pueden estar retrasados, incompletos o no disponibles.",
+    "workspace": "Institutional FX structuring workspace",
+    "workspaceShort": "Institutional workspace",
+    "tickerNote": "Refresh every 5 min • 15 min delay"
   },
   "nav": {
     "home": "Inicio",
@@ -22,31 +25,88 @@
     "marketCard": "Datos FX live o demo, tendencias spot, volatilidad realizada y Market Pulse.",
     "structureCard": "Recomendaciones alineadas con objetivo, restricciones y suitability.",
     "payoffCard": "Pricing Garman-Kohlhagen, Greeks y comparación de escenarios de payoff.",
-    "summaryCard": "Explicaciones técnicas y orientadas al cliente en los principales idiomas institucionales."
+    "summaryCard": "Explicaciones técnicas y orientadas al cliente en los principales idiomas institucionales.",
+    "preview": {
+      "pairSelection": "Pair selection",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load",
+      "previewCockpit": "Preview cockpit",
+      "selectedPair": "{pair} selected",
+      "regimeBadgeTitle": "Regime is derived from the latest Volatility 1 reading versus its two-year distribution.",
+      "volatility": "Volatility {number}",
+      "periodLabel": "{label} period",
+      "toggleCurveTitle": "Toggle {label} on or off.",
+      "realizedVolatilityName": "{label} realized volatility",
+      "legend": "{label}: {days}-day realized volatility",
+      "regimeFrameworkTitle": "The regime is anchored to the latest Volatility 1 reading versus the two-year distribution of that same realized-volatility series.",
+      "quantileFramework": "Quantile framework: calm if latest Volatility 1 is below Q25 ({q25}%), neutral if between Q25 and Q75 ({q75}%), stressed if above Q75.",
+      "structureIdeas": "Structure ideas",
+      "newsPreview": "News preview",
+      "regimes": {
+        "calm": {
+          "label": "Market is Calm",
+          "subtitle": "Low-vol regime",
+          "description": "Stable market conditions, compressed risk premia, often trend-friendly but vulnerable to volatility shocks."
+        },
+        "neutral": {
+          "label": "Normal / neutral regime",
+          "subtitle": "Medium volatility",
+          "description": "Typical market environment; volatility is trading inside its interquartile range."
+        },
+        "stressed": {
+          "label": "Market is Stressed",
+          "subtitle": "High-vol regime",
+          "description": "Volatility is above its upper quartile and market pricing is reflecting a stressed backdrop."
+        }
+      },
+      "ideas": {
+        "forward": {
+          "name": "Forward",
+          "note": "Budget certainty for known USD outflow."
+        },
+        "vanilla": {
+          "name": "Vanilla option",
+          "note": "Preserve upside while capping worst case."
+        },
+        "riskReversal": {
+          "name": "Risk reversal",
+          "note": "Zero-premium protection with sold-strike trade-off."
+        }
+      }
+    }
   },
   "market": {
     "title": "Cockpit de Mercado",
     "subtitle": "Spot, volatilidad realizada, intuición de carry y régimen de mercado en los principales pares FX.",
     "news": "Market Pulse",
-    "liveStatus": "Estado del feed live"
+    "liveStatus": "Estado del feed live",
+    "eyebrow": "FX dashboard"
   },
   "exposure": {
     "title": "Client Exposure Translator",
     "subtitle": "Convierte la dirección de los flujos y las restricciones del cliente en un diagnóstico de exposición y un universo de producto relevante.",
-    "action": "Traducir exposición"
+    "action": "Traducir exposición",
+    "eyebrow": "Client workflow"
   },
   "structures": {
     "title": "Structure Recommender",
     "subtitle": "Estructuras de cobertura relevantes con racional para cliente, sales, trading y risk control.",
-    "whyThisTrades": "Por qué esta estructura encaja"
+    "whyThisTrades": "Por qué esta estructura encaja",
+    "eyebrow": "Recommendation engine"
   },
   "payoff": {
     "title": "Laboratorio de Payoff",
-    "subtitle": "Pricing interactivo de opciones FX, Greeks y comparaciones simplificadas de payoff."
+    "subtitle": "Pricing interactivo de opciones FX, Greeks y comparaciones simplificadas de payoff.",
+    "eyebrow": "Quant workflow"
   },
   "portfolio": {
     "title": "Riesgo FX de cartera",
-    "subtitle": "Concentraciones de exposición, efectos de diversificación y riesgo residual de cobertura."
+    "subtitle": "Concentraciones de exposición, efectos de diversificación y riesgo residual de cobertura.",
+    "eyebrow": "Cross-asset overlay",
+    "badge": "Diversification lens"
   },
   "ma": {
     "title": "M&A Deal-Contingent Hedge Studio",
@@ -58,6 +118,18 @@
     "technical": "Explicación técnica",
     "client": "Explicación para cliente",
     "emailReady": "Resumen listo para e-mail",
-    "riskWarning": "Advertencia de riesgo"
+    "riskWarning": "Advertencia de riesgo",
+    "eyebrow": "Distribution output"
+  },
+  "common": {
+    "selectLanguage": "Select language",
+    "fxPairSelector": {
+      "label": "Currency pair",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load"
+    }
   }
 }

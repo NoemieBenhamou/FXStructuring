@@ -7,7 +7,7 @@ export default async function ExposurePage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader eyebrow="Client workflow" title={t("title")} description={t("subtitle")} />
+      <PageHeader eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")} />
       <ExposureTranslator />
     </div>
   );

@@ -28,6 +28,7 @@ export function AppShell({
 }) {
   const [open, setOpen] = useState(false);
   const t = useTranslations("nav");
+  const appT = useTranslations("app");
   const pathname = usePathname();
 
   const navigation = navKeys.map(([key, href]) => ({
@@ -40,8 +41,8 @@ export function AppShell({
     <div className="dashboard-grid min-h-screen bg-bank-grid bg-[length:44px_44px]">
       <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col lg:border-r lg:border-bank-border lg:bg-bank-bgAlt/90 lg:backdrop-blur">
         <div className="border-b border-bank-border px-6 py-6">
-          <div className="text-xs uppercase tracking-[0.24em] text-bank-gold">FX Structure LAB</div>
-          <div className="mt-2 text-2xl font-semibold text-bank-text">Institutional FX structuring workspace</div>
+          <div className="text-xs uppercase tracking-[0.24em] text-bank-gold">{appT("name")}</div>
+          <div className="mt-2 text-2xl font-semibold text-bank-text">{appT("workspace")}</div>
         </div>
         <nav className="flex-1 space-y-1 px-4 py-6">
           {navigation.map((item) => {
@@ -71,8 +72,8 @@ export function AppShell({
               {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </Button>
             <div>
-              <div className="text-xs font-semibold text-bank-text sm:text-sm">FX Structure LAB</div>
-              <div className="hidden text-xs uppercase tracking-[0.22em] text-bank-muted sm:block">Institutional workspace</div>
+              <div className="text-xs font-semibold text-bank-text sm:text-sm">{appT("name")}</div>
+              <div className="hidden text-xs uppercase tracking-[0.22em] text-bank-muted sm:block">{appT("workspaceShort")}</div>
             </div>
           </div>
 

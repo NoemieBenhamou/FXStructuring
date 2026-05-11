@@ -8,7 +8,7 @@ export default async function SummaryPage({ params }: { params: Promise<{ locale
 
   return (
     <div className="space-y-6">
-      <PageHeader eyebrow="Distribution output" title={t("title")} description={t("subtitle")} />
+      <PageHeader eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")} />
       <ClientSummary locale={locale} />
     </div>
   );

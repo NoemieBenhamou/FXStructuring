@@ -7,7 +7,7 @@ export default async function StructuresPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader eyebrow="Recommendation engine" title={t("title")} description={t("subtitle")} />
+      <PageHeader eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")} />
       <StructureWorkbench />
     </div>
   );

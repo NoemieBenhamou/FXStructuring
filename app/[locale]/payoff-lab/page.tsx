@@ -7,7 +7,7 @@ export default async function PayoffLabPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader eyebrow="Quant workflow" title={t("title")} description={t("subtitle")} />
+      <PageHeader eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")} />
       <OptionCalculator />
     </div>
   );

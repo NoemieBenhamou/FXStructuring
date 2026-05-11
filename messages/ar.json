@@ -3,7 +3,10 @@
     "name": "FX Structure LAB",
     "codename": "FXStructureLab",
     "tagline": "بيانات سوق وتحليلات عائد وأفكار تحوط عملات أجنبية جاهزة للعميل ضمن قمرة هيكلة متعددة اللغات.",
-    "disclaimer": "نموذج تعليمي فقط. ليس نصيحة استثمارية. الأسعار والعوائد والاحتمالات وGreeks ومقاييس المخاطر توضيحية وليست أسعار سوق قابلة للتنفيذ. وعند تفعيل البيانات الحية فهي من مزودين خارجيين وقد تكون متأخرة أو غير مكتملة أو غير متاحة."
+    "disclaimer": "نموذج تعليمي فقط. ليس نصيحة استثمارية. الأسعار والعوائد والاحتمالات وGreeks ومقاييس المخاطر توضيحية وليست أسعار سوق قابلة للتنفيذ. وعند تفعيل البيانات الحية فهي من مزودين خارجيين وقد تكون متأخرة أو غير مكتملة أو غير متاحة.",
+    "workspace": "Institutional FX structuring workspace",
+    "workspaceShort": "Institutional workspace",
+    "tickerNote": "Refresh every 5 min • 15 min delay"
   },
   "nav": {
     "home": "الرئيسية",
@@ -22,31 +25,88 @@
     "marketCard": "بيانات FX حية أو تجريبية واتجاهات spot وتقلب محقق وMarket Pulse.",
     "structureCard": "توصيات منسجمة مع الهدف والقيود والملاءمة.",
     "payoffCard": "تسعير Garman-Kohlhagen وGreeks ومقارنة سيناريوهات العائد.",
-    "summaryCard": "شروحات تقنية ومبسطة للعميل باللغات المؤسسية الرئيسية."
+    "summaryCard": "شروحات تقنية ومبسطة للعميل باللغات المؤسسية الرئيسية.",
+    "preview": {
+      "pairSelection": "Pair selection",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load",
+      "previewCockpit": "Preview cockpit",
+      "selectedPair": "{pair} selected",
+      "regimeBadgeTitle": "Regime is derived from the latest Volatility 1 reading versus its two-year distribution.",
+      "volatility": "Volatility {number}",
+      "periodLabel": "{label} period",
+      "toggleCurveTitle": "Toggle {label} on or off.",
+      "realizedVolatilityName": "{label} realized volatility",
+      "legend": "{label}: {days}-day realized volatility",
+      "regimeFrameworkTitle": "The regime is anchored to the latest Volatility 1 reading versus the two-year distribution of that same realized-volatility series.",
+      "quantileFramework": "Quantile framework: calm if latest Volatility 1 is below Q25 ({q25}%), neutral if between Q25 and Q75 ({q75}%), stressed if above Q75.",
+      "structureIdeas": "Structure ideas",
+      "newsPreview": "News preview",
+      "regimes": {
+        "calm": {
+          "label": "Market is Calm",
+          "subtitle": "Low-vol regime",
+          "description": "Stable market conditions, compressed risk premia, often trend-friendly but vulnerable to volatility shocks."
+        },
+        "neutral": {
+          "label": "Normal / neutral regime",
+          "subtitle": "Medium volatility",
+          "description": "Typical market environment; volatility is trading inside its interquartile range."
+        },
+        "stressed": {
+          "label": "Market is Stressed",
+          "subtitle": "High-vol regime",
+          "description": "Volatility is above its upper quartile and market pricing is reflecting a stressed backdrop."
+        }
+      },
+      "ideas": {
+        "forward": {
+          "name": "Forward",
+          "note": "Budget certainty for known USD outflow."
+        },
+        "vanilla": {
+          "name": "Vanilla option",
+          "note": "Preserve upside while capping worst case."
+        },
+        "riskReversal": {
+          "name": "Risk reversal",
+          "note": "Zero-premium protection with sold-strike trade-off."
+        }
+      }
+    }
   },
   "market": {
     "title": "قمرة السوق",
     "subtitle": "spot والتقلب المحقق وحدس carry ونظام السوق عبر أزواج العملات الرئيسية.",
     "news": "Market Pulse",
-    "liveStatus": "حالة البيانات الحية"
+    "liveStatus": "حالة البيانات الحية",
+    "eyebrow": "FX dashboard"
   },
   "exposure": {
     "title": "Client Exposure Translator",
     "subtitle": "تحويل اتجاه التدفقات النقدية وقيود العميل إلى تشخيص للانكشاف ومجموعة المنتجات المناسبة.",
-    "action": "ترجمة الانكشاف"
+    "action": "ترجمة الانكشاف",
+    "eyebrow": "Client workflow"
   },
   "structures": {
     "title": "Structure Recommender",
     "subtitle": "هياكل تحوط مناسبة مع منطق من منظور العميل والمبيعات والتداول والرقابة على المخاطر.",
-    "whyThisTrades": "لماذا يناسب هذا الهيكل"
+    "whyThisTrades": "لماذا يناسب هذا الهيكل",
+    "eyebrow": "Recommendation engine"
   },
   "payoff": {
     "title": "مختبر العائد",
-    "subtitle": "تسعير تفاعلي لخيارات FX وGreeks ومقارنات مبسطة لهياكل العائد."
+    "subtitle": "تسعير تفاعلي لخيارات FX وGreeks ومقارنات مبسطة لهياكل العائد.",
+    "eyebrow": "Quant workflow"
   },
   "portfolio": {
     "title": "مخاطر العملات في المحفظة",
-    "subtitle": "تركيزات الانكشاف وآثار التنويع ومخاطر التحوط المتبقية."
+    "subtitle": "تركيزات الانكشاف وآثار التنويع ومخاطر التحوط المتبقية.",
+    "eyebrow": "Cross-asset overlay",
+    "badge": "Diversification lens"
   },
   "ma": {
     "title": "M&A Deal-Contingent Hedge Studio",
@@ -58,6 +118,18 @@
     "technical": "الشرح التقني",
     "client": "الشرح الموجه للعميل",
     "emailReady": "ملخص جاهز للبريد الإلكتروني",
-    "riskWarning": "تحذير المخاطر"
+    "riskWarning": "تحذير المخاطر",
+    "eyebrow": "Distribution output"
+  },
+  "common": {
+    "selectLanguage": "Select language",
+    "fxPairSelector": {
+      "label": "Currency pair",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load"
+    }
   }
 }

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Activity, ChartColumnBig, Newspaper } from "lucide-react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { type MarketDataResponse, type MarketRange, fetchMarketData } from "@/lib/api/client";
+import { darkCartesianTooltipProps } from "@/components/common/chart-tooltip";
 import { MetricCard } from "@/components/common/metric-card";
 import { NewsFeed } from "@/components/market/news-feed";
 import { Badge } from "@/components/ui/badge";
@@ -313,7 +314,10 @@ export function MarketCockpit({ initialPair = "EURUSD" }: { initialPair?: string
                         width={72}
                         tickFormatter={(value) => Number(value).toFixed(snapshot.spot > 10 ? 0 : 4)}
                       />
-                      <Tooltip formatter={(value) => Number(value).toFixed(snapshot.spot > 10 ? 3 : 5)} />
+                      <Tooltip
+                        {...darkCartesianTooltipProps}
+                        formatter={(value) => Number(value).toFixed(snapshot.spot > 10 ? 3 : 5)}
+                      />
                       <Line type="monotone" dataKey="close" name="Spot" stroke="#38A3C7" strokeWidth={2.25} dot={false} />
                       {showMovingAverage ? (
                         <Line

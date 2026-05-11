@@ -1,18 +1,19 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { localeLabels, locales } from "@/i18n";
 import { Select } from "@/components/ui/select";
 
 export function LocaleSwitcher() {
   const locale = useLocale();
+  const t = useTranslations("common");
   const router = useRouter();
   const pathname = usePathname();
 
   return (
     <Select
-      aria-label="Select language"
+      aria-label={t("selectLanguage")}
       className="min-w-32"
       value={locale}
       onChange={(event) => {

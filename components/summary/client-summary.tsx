@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { AppTooltip } from "@/components/common/app-tooltip";
 import { FxPairSelector } from "@/components/common/fx-pair-selector";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -121,27 +122,24 @@ export function ClientSummary({ locale }: { locale: string }) {
       <Card className="rounded-3xl">
         <CardContent className="flex flex-col gap-4 py-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap gap-3">
-            <Button
-              variant={activeView === "tarf" ? "primary" : "secondary"}
-              onClick={() => setActiveView("tarf")}
-              title="Open the TARF input form and indicative term sheet."
-            >
-              TARF
-            </Button>
-            <Button
-              variant={activeView === "summary" ? "primary" : "secondary"}
-              onClick={() => setActiveView("summary")}
-              title="Open the distribution-facing summary."
-            >
-              Client Summary
-            </Button>
+            <AppTooltip label="Open the TARF input form and indicative term sheet.">
+              <Button variant={activeView === "tarf" ? "primary" : "secondary"} onClick={() => setActiveView("tarf")}>
+                TARF
+              </Button>
+            </AppTooltip>
+            <AppTooltip label="Open the distribution-facing summary.">
+              <Button variant={activeView === "summary" ? "primary" : "secondary"} onClick={() => setActiveView("summary")}>
+                Client Summary
+              </Button>
+            </AppTooltip>
           </div>
-          <Button
-            onClick={() => void handleDownloadPdf()}
-            title={activeView === "summary" ? "Download the client summary as PDF." : "Download the indicative TARF term sheet as PDF."}
+          <AppTooltip
+            label={activeView === "summary" ? "Download the client summary as PDF." : "Download the indicative TARF term sheet as PDF."}
           >
-            {activeView === "summary" ? "Download summary in PDF" : "Download term sheet in PDF"}
-          </Button>
+            <Button onClick={() => void handleDownloadPdf()}>
+              {activeView === "summary" ? "Download summary in PDF" : "Download term sheet in PDF"}
+            </Button>
+          </AppTooltip>
         </CardContent>
       </Card>
 

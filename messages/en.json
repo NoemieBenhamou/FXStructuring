@@ -3,7 +3,10 @@
     "name": "FX Structure LAB",
     "codename": "FXStructureLab",
     "tagline": "Market data, payoff analytics, and client-ready FX hedge ideas in one multilingual structuring cockpit.",
-    "disclaimer": "Educational prototype only. Not investment advice. Prices, payoffs, probabilities, Greeks and risk metrics are illustrative and not executable market quotes. Live feeds, where enabled, are third-party data sources and may be delayed, incomplete or unavailable."
+    "disclaimer": "Educational prototype only. Not investment advice. Prices, payoffs, probabilities, Greeks and risk metrics are illustrative and not executable market quotes. Live feeds, where enabled, are third-party data sources and may be delayed, incomplete or unavailable.",
+    "workspace": "Institutional FX structuring workspace",
+    "workspaceShort": "Institutional workspace",
+    "tickerNote": "Refresh every 5 min • 15 min delay"
   },
   "nav": {
     "home": "Home",
@@ -22,31 +25,88 @@
     "marketCard": "Live or demo FX data, spot trends, realized vol and market pulse.",
     "structureCard": "Recommendations aligned with objective, constraints and suitability.",
     "payoffCard": "Garman-Kohlhagen pricing, Greeks and scenario payoff comparison.",
-    "summaryCard": "Technical and client-friendly explanations in major institutional languages."
+    "summaryCard": "Technical and client-friendly explanations in major institutional languages.",
+    "preview": {
+      "pairSelection": "Pair selection",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load",
+      "previewCockpit": "Preview cockpit",
+      "selectedPair": "{pair} selected",
+      "regimeBadgeTitle": "Regime is derived from the latest Volatility 1 reading versus its two-year distribution.",
+      "volatility": "Volatility {number}",
+      "periodLabel": "{label} period",
+      "toggleCurveTitle": "Toggle {label} on or off.",
+      "realizedVolatilityName": "{label} realized volatility",
+      "legend": "{label}: {days}-day realized volatility",
+      "regimeFrameworkTitle": "The regime is anchored to the latest Volatility 1 reading versus the two-year distribution of that same realized-volatility series.",
+      "quantileFramework": "Quantile framework: calm if latest Volatility 1 is below Q25 ({q25}%), neutral if between Q25 and Q75 ({q75}%), stressed if above Q75.",
+      "structureIdeas": "Structure ideas",
+      "newsPreview": "News preview",
+      "regimes": {
+        "calm": {
+          "label": "Market is Calm",
+          "subtitle": "Low-vol regime",
+          "description": "Stable market conditions, compressed risk premia, often trend-friendly but vulnerable to volatility shocks."
+        },
+        "neutral": {
+          "label": "Normal / neutral regime",
+          "subtitle": "Medium volatility",
+          "description": "Typical market environment; volatility is trading inside its interquartile range."
+        },
+        "stressed": {
+          "label": "Market is Stressed",
+          "subtitle": "High-vol regime",
+          "description": "Volatility is above its upper quartile and market pricing is reflecting a stressed backdrop."
+        }
+      },
+      "ideas": {
+        "forward": {
+          "name": "Forward",
+          "note": "Budget certainty for known USD outflow."
+        },
+        "vanilla": {
+          "name": "Vanilla option",
+          "note": "Preserve upside while capping worst case."
+        },
+        "riskReversal": {
+          "name": "Risk reversal",
+          "note": "Zero-premium protection with sold-strike trade-off."
+        }
+      }
+    }
   },
   "market": {
     "title": "Market Cockpit",
     "subtitle": "Spot, realized volatility, carry intuition and market regime across major FX pairs.",
     "news": "Market Pulse",
-    "liveStatus": "Live feed status"
+    "liveStatus": "Live feed status",
+    "eyebrow": "FX dashboard"
   },
   "exposure": {
     "title": "Client Exposure Translator",
     "subtitle": "Turn client cashflow direction and constraints into an exposure diagnosis and product universe.",
-    "action": "Translate exposure"
+    "action": "Translate exposure",
+    "eyebrow": "Client workflow"
   },
   "structures": {
     "title": "Structure Recommender",
     "subtitle": "Relevant hedge structures with client, sales, trading and risk-control rationale.",
-    "whyThisTrades": "Why this trades"
+    "whyThisTrades": "Why this trades",
+    "eyebrow": "Recommendation engine"
   },
   "payoff": {
     "title": "Payoff Lab",
-    "subtitle": "Interactive FX option pricing, Greeks and simplified structure payoff comparisons."
+    "subtitle": "Interactive FX option pricing, Greeks and simplified structure payoff comparisons.",
+    "eyebrow": "Quant workflow"
   },
   "portfolio": {
     "title": "Portfolio FX Risk",
-    "subtitle": "Exposure concentrations, diversification effects and residual hedge risk."
+    "subtitle": "Exposure concentrations, diversification effects and residual hedge risk.",
+    "eyebrow": "Cross-asset overlay",
+    "badge": "Diversification lens"
   },
   "ma": {
     "title": "M&A Deal-Contingent Hedge Studio",
@@ -58,6 +118,18 @@
     "technical": "Technical explanation",
     "client": "Client-friendly explanation",
     "emailReady": "Email-ready summary",
-    "riskWarning": "Risk warning"
+    "riskWarning": "Risk warning",
+    "eyebrow": "Distribution output"
+  },
+  "common": {
+    "selectLanguage": "Select language",
+    "fxPairSelector": {
+      "label": "Currency pair",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load"
+    }
   }
 }

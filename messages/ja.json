@@ -3,7 +3,10 @@
     "name": "FX Structure LAB",
     "codename": "FXStructureLab",
     "tagline": "市場データ、ペイオフ分析、顧客向けFXヘッジ案を1つの多言語ストラクチャリング・コックピットに集約。",
-    "disclaimer": "教育用プロトタイプです。投資助言ではありません。価格、ペイオフ、確率、Greeks、リスク指標はすべて例示であり、執行可能な市場クオートではありません。ライブフィードを有効化した場合でも第三者データであり、遅延、不完全、または利用不可の可能性があります。"
+    "disclaimer": "教育用プロトタイプです。投資助言ではありません。価格、ペイオフ、確率、Greeks、リスク指標はすべて例示であり、執行可能な市場クオートではありません。ライブフィードを有効化した場合でも第三者データであり、遅延、不完全、または利用不可の可能性があります。",
+    "workspace": "Institutional FX structuring workspace",
+    "workspaceShort": "Institutional workspace",
+    "tickerNote": "Refresh every 5 min • 15 min delay"
   },
   "nav": {
     "home": "ホーム",
@@ -22,31 +25,88 @@
     "marketCard": "ライブまたはデモのFXデータ、スポットトレンド、実現ボラティリティ、Market Pulse。",
     "structureCard": "目的、制約、suitability に沿った提案。",
     "payoffCard": "Garman-Kohlhagen 価格評価、Greeks、シナリオ別ペイオフ比較。",
-    "summaryCard": "主要な機関投資家言語でのテクニカル説明と顧客向け説明。"
+    "summaryCard": "主要な機関投資家言語でのテクニカル説明と顧客向け説明。",
+    "preview": {
+      "pairSelection": "Pair selection",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load",
+      "previewCockpit": "Preview cockpit",
+      "selectedPair": "{pair} selected",
+      "regimeBadgeTitle": "Regime is derived from the latest Volatility 1 reading versus its two-year distribution.",
+      "volatility": "Volatility {number}",
+      "periodLabel": "{label} period",
+      "toggleCurveTitle": "Toggle {label} on or off.",
+      "realizedVolatilityName": "{label} realized volatility",
+      "legend": "{label}: {days}-day realized volatility",
+      "regimeFrameworkTitle": "The regime is anchored to the latest Volatility 1 reading versus the two-year distribution of that same realized-volatility series.",
+      "quantileFramework": "Quantile framework: calm if latest Volatility 1 is below Q25 ({q25}%), neutral if between Q25 and Q75 ({q75}%), stressed if above Q75.",
+      "structureIdeas": "Structure ideas",
+      "newsPreview": "News preview",
+      "regimes": {
+        "calm": {
+          "label": "Market is Calm",
+          "subtitle": "Low-vol regime",
+          "description": "Stable market conditions, compressed risk premia, often trend-friendly but vulnerable to volatility shocks."
+        },
+        "neutral": {
+          "label": "Normal / neutral regime",
+          "subtitle": "Medium volatility",
+          "description": "Typical market environment; volatility is trading inside its interquartile range."
+        },
+        "stressed": {
+          "label": "Market is Stressed",
+          "subtitle": "High-vol regime",
+          "description": "Volatility is above its upper quartile and market pricing is reflecting a stressed backdrop."
+        }
+      },
+      "ideas": {
+        "forward": {
+          "name": "Forward",
+          "note": "Budget certainty for known USD outflow."
+        },
+        "vanilla": {
+          "name": "Vanilla option",
+          "note": "Preserve upside while capping worst case."
+        },
+        "riskReversal": {
+          "name": "Risk reversal",
+          "note": "Zero-premium protection with sold-strike trade-off."
+        }
+      }
+    }
   },
   "market": {
     "title": "マーケット・コックピット",
     "subtitle": "主要FXペアのスポット、実現ボラティリティ、carry の直感、マーケット・レジームを表示。",
     "news": "Market Pulse",
-    "liveStatus": "ライブフィード状況"
+    "liveStatus": "ライブフィード状況",
+    "eyebrow": "FX dashboard"
   },
   "exposure": {
     "title": "Client Exposure Translator",
     "subtitle": "顧客のキャッシュフロー方向と制約を、エクスポージャー診断と関連商品群に変換します。",
-    "action": "エクスポージャーを変換"
+    "action": "エクスポージャーを変換",
+    "eyebrow": "Client workflow"
   },
   "structures": {
     "title": "Structure Recommender",
     "subtitle": "顧客、セールス、トレーディング、リスク管理の観点から関連ヘッジ案を提示します。",
-    "whyThisTrades": "この提案が機能する理由"
+    "whyThisTrades": "この提案が機能する理由",
+    "eyebrow": "Recommendation engine"
   },
   "payoff": {
     "title": "ペイオフ・ラボ",
-    "subtitle": "インタラクティブなFXオプション価格評価、Greeks、簡易ストラクチャー・ペイオフ比較。"
+    "subtitle": "インタラクティブなFXオプション価格評価、Greeks、簡易ストラクチャー・ペイオフ比較。",
+    "eyebrow": "Quant workflow"
   },
   "portfolio": {
     "title": "ポートフォリオFXリスク",
-    "subtitle": "エクスポージャー集中、分散効果、残存ヘッジリスク。"
+    "subtitle": "エクスポージャー集中、分散効果、残存ヘッジリスク。",
+    "eyebrow": "Cross-asset overlay",
+    "badge": "Diversification lens"
   },
   "ma": {
     "title": "M&A Deal-Contingent Hedge Studio",
@@ -58,6 +118,18 @@
     "technical": "テクニカル説明",
     "client": "顧客向け説明",
     "emailReady": "メール用サマリー",
-    "riskWarning": "リスク警告"
+    "riskWarning": "リスク警告",
+    "eyebrow": "Distribution output"
+  },
+  "common": {
+    "selectLanguage": "Select language",
+    "fxPairSelector": {
+      "label": "Currency pair",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load"
+    }
   }
 }

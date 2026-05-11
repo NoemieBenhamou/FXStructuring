@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { darkCartesianTooltipProps } from "@/components/common/chart-tooltip";
 import { FxPairSelector } from "@/components/common/fx-pair-selector";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -247,7 +248,7 @@ export function OptionCalculator() {
                   <CartesianGrid stroke="#163452" strokeDasharray="4 4" />
                   <XAxis dataKey="spot" tick={{ fill: "#CBD5E1", fontSize: 11 }} />
                   <YAxis tick={{ fill: "#CBD5E1", fontSize: 11 }} width={72} />
-                  <Tooltip />
+                  <Tooltip {...darkCartesianTooltipProps} />
                   {SERIES.map((series) => (
                     <Line
                       key={series.key}

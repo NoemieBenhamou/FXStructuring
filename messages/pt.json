@@ -3,7 +3,10 @@
     "name": "FX Structure LAB",
     "codename": "FXStructureLab",
     "tagline": "Dados de mercado, análise de payoff e ideias de hedge FX prontas para cliente em um cockpit de estruturação multilíngue.",
-    "disclaimer": "Protótipo educacional apenas. Não é aconselhamento de investimento. Preços, payoffs, probabilidades, Greeks e métricas de risco são ilustrativos e não são cotações executáveis. Os feeds ao vivo, quando ativados, são de terceiros e podem estar atrasados, incompletos ou indisponíveis."
+    "disclaimer": "Protótipo educacional apenas. Não é aconselhamento de investimento. Preços, payoffs, probabilidades, Greeks e métricas de risco são ilustrativos e não são cotações executáveis. Os feeds ao vivo, quando ativados, são de terceiros e podem estar atrasados, incompletos ou indisponíveis.",
+    "workspace": "Institutional FX structuring workspace",
+    "workspaceShort": "Institutional workspace",
+    "tickerNote": "Refresh every 5 min • 15 min delay"
   },
   "nav": {
     "home": "Início",
@@ -22,31 +25,88 @@
     "marketCard": "Dados FX live ou demo, tendências spot, volatilidade realizada e Market Pulse.",
     "structureCard": "Recomendações alinhadas com objetivo, restrições e suitability.",
     "payoffCard": "Pricing Garman-Kohlhagen, Greeks e comparação de cenários de payoff.",
-    "summaryCard": "Explicações técnicas e amigáveis ao cliente nos principais idiomas institucionais."
+    "summaryCard": "Explicações técnicas e amigáveis ao cliente nos principais idiomas institucionais.",
+    "preview": {
+      "pairSelection": "Pair selection",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load",
+      "previewCockpit": "Preview cockpit",
+      "selectedPair": "{pair} selected",
+      "regimeBadgeTitle": "Regime is derived from the latest Volatility 1 reading versus its two-year distribution.",
+      "volatility": "Volatility {number}",
+      "periodLabel": "{label} period",
+      "toggleCurveTitle": "Toggle {label} on or off.",
+      "realizedVolatilityName": "{label} realized volatility",
+      "legend": "{label}: {days}-day realized volatility",
+      "regimeFrameworkTitle": "The regime is anchored to the latest Volatility 1 reading versus the two-year distribution of that same realized-volatility series.",
+      "quantileFramework": "Quantile framework: calm if latest Volatility 1 is below Q25 ({q25}%), neutral if between Q25 and Q75 ({q75}%), stressed if above Q75.",
+      "structureIdeas": "Structure ideas",
+      "newsPreview": "News preview",
+      "regimes": {
+        "calm": {
+          "label": "Market is Calm",
+          "subtitle": "Low-vol regime",
+          "description": "Stable market conditions, compressed risk premia, often trend-friendly but vulnerable to volatility shocks."
+        },
+        "neutral": {
+          "label": "Normal / neutral regime",
+          "subtitle": "Medium volatility",
+          "description": "Typical market environment; volatility is trading inside its interquartile range."
+        },
+        "stressed": {
+          "label": "Market is Stressed",
+          "subtitle": "High-vol regime",
+          "description": "Volatility is above its upper quartile and market pricing is reflecting a stressed backdrop."
+        }
+      },
+      "ideas": {
+        "forward": {
+          "name": "Forward",
+          "note": "Budget certainty for known USD outflow."
+        },
+        "vanilla": {
+          "name": "Vanilla option",
+          "note": "Preserve upside while capping worst case."
+        },
+        "riskReversal": {
+          "name": "Risk reversal",
+          "note": "Zero-premium protection with sold-strike trade-off."
+        }
+      }
+    }
   },
   "market": {
     "title": "Cockpit de Mercado",
     "subtitle": "Spot, volatilidade realizada, intuição de carry e regime de mercado nos principais pares FX.",
     "news": "Market Pulse",
-    "liveStatus": "Status do feed ao vivo"
+    "liveStatus": "Status do feed ao vivo",
+    "eyebrow": "FX dashboard"
   },
   "exposure": {
     "title": "Client Exposure Translator",
     "subtitle": "Transforma direção de fluxo e restrições do cliente em diagnóstico de exposição e universo de produto relevante.",
-    "action": "Traduzir exposição"
+    "action": "Traduzir exposição",
+    "eyebrow": "Client workflow"
   },
   "structures": {
     "title": "Structure Recommender",
     "subtitle": "Estruturas de hedge relevantes com racional para cliente, sales, trading e risk control.",
-    "whyThisTrades": "Por que esta estrutura faz sentido"
+    "whyThisTrades": "Por que esta estrutura faz sentido",
+    "eyebrow": "Recommendation engine"
   },
   "payoff": {
     "title": "Laboratório de Payoff",
-    "subtitle": "Pricing interativo de opções FX, Greeks e comparações simplificadas de payoff."
+    "subtitle": "Pricing interativo de opções FX, Greeks e comparações simplificadas de payoff.",
+    "eyebrow": "Quant workflow"
   },
   "portfolio": {
     "title": "Risco FX de portfólio",
-    "subtitle": "Concentrações de exposição, efeitos de diversificação e risco residual de hedge."
+    "subtitle": "Concentrações de exposição, efeitos de diversificação e risco residual de hedge.",
+    "eyebrow": "Cross-asset overlay",
+    "badge": "Diversification lens"
   },
   "ma": {
     "title": "M&A Deal-Contingent Hedge Studio",
@@ -58,6 +118,18 @@
     "technical": "Explicação técnica",
     "client": "Explicação para o cliente",
     "emailReady": "Resumo pronto para e-mail",
-    "riskWarning": "Aviso de risco"
+    "riskWarning": "Aviso de risco",
+    "eyebrow": "Distribution output"
+  },
+  "common": {
+    "selectLanguage": "Select language",
+    "fxPairSelector": {
+      "label": "Currency pair",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load"
+    }
   }
 }

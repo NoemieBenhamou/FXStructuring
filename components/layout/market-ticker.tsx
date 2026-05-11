@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { fetchMarketTicker, type MarketTickerItem } from "@/lib/api/client";
 
-function formatTickerPrice(item: MarketTickerItem) {
+function formatTickerPrice(item: MarketTickerItem, locale: string) {
   if (item.label.includes("Yield")) return `${item.price.toFixed(2)}%`;
-  if (item.price >= 1000) return item.price.toLocaleString("en-US", { maximumFractionDigits: 2 });
+  if (item.price >= 1000) return item.price.toLocaleString(locale, { maximumFractionDigits: 2 });
   return item.price.toFixed(2);
 }
 
@@ -14,6 +15,8 @@ function formatTickerMove(changePercent: number) {
 }
 
 export function MarketTicker() {
+  const locale = useLocale();
+  const t = useTranslations("app");
   const [items, setItems] = useState<MarketTickerItem[]>([]);
 
   useEffect(() => {
@@ -56,14 +59,14 @@ export function MarketTicker() {
           {tickerItems.map((item, index) => (
             <div key={`${item.symbol}-${index}`} className="inline-flex items-center gap-3 rounded-full border border-bank-border/60 bg-bank-bg/55 px-3 py-1 text-xs whitespace-nowrap">
               <span className="uppercase tracking-[0.18em] text-bank-gold">{item.label}</span>
-              <span className="font-medium text-bank-text">{formatTickerPrice(item)}</span>
+              <span className="font-medium text-bank-text">{formatTickerPrice(item, locale)}</span>
               <span className={item.changePercent >= 0 ? "text-emerald-300" : "text-rose-300"}>{formatTickerMove(item.changePercent)}</span>
             </div>
           ))}
         </div>
       </div>
       <div className="mt-1.5 text-[11px] uppercase tracking-[0.16em] text-bank-muted">
-        Refresh every 5 mn • 15 mn delay
+        {t("tickerNote")}
       </div>
     </div>
   );

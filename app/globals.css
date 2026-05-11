@@ -61,6 +61,18 @@ textarea {
   border-radius: 9999px;
 }
 
+.recharts-default-tooltip {
+  background: rgba(15, 42, 68, 0.96) !important;
+  border: 1px solid #1f3a55 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28) !important;
+  color: #f8fafc !important;
+}
+
+.recharts-tooltip-label {
+  color: #cbd5e1 !important;
+}
+
 .ticker-mask {
   overflow: hidden;
   position: relative;

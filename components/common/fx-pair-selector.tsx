@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -17,9 +18,10 @@ type FxPairSelectorProps = {
 export function FxPairSelector({
   pair,
   onPairChange,
-  label = "Currency pair",
+  label,
   tone = "default"
 }: FxPairSelectorProps) {
+  const t = useTranslations("common.fxPairSelector");
   const normalizedPair = normalizeFxPair(pair);
   const isListedPair =
     MAJOR_FX_PAIRS.includes(normalizedPair as (typeof MAJOR_FX_PAIRS)[number]) ||
@@ -51,10 +53,11 @@ export function FxPairSelector({
   const selectClassName = editable ? "border-bank-cyan/50 bg-bank-cyan/10 focus:border-bank-cyan" : undefined;
   const inputClassName = editable ? "border-bank-cyan/50 bg-bank-cyan/10 focus:border-bank-cyan" : undefined;
   const surfaceClassName = editable ? "rounded-2xl border border-bank-cyan/35 bg-bank-cyan/5 p-3" : undefined;
+  const displayLabel = label ?? t("label");
 
   return (
     <div className="grid gap-1.5">
-      {label ? <span className="text-xs uppercase tracking-[0.2em] text-bank-muted">{label}</span> : null}
+      {displayLabel ? <span className="text-xs uppercase tracking-[0.2em] text-bank-muted">{displayLabel}</span> : null}
       <div className={cn(surfaceClassName)}>
         <div className="grid gap-3 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start">
           <Select
@@ -68,32 +71,32 @@ export function FxPairSelector({
               }
             }}
           >
-            <optgroup label="Major crosses">
+            <optgroup label={t("majorCrosses")}>
               {MAJOR_FX_PAIRS.map((item) => (
                 <option key={item} value={item}>
                   {formatFxPair(item)}
                 </option>
               ))}
             </optgroup>
-            <optgroup label="Other supported crosses">
+            <optgroup label={t("otherSupportedCrosses")}>
               {OTHER_SUPPORTED_FX_PAIRS.map((item) => (
                 <option key={item} value={item}>
                   {formatFxPair(item)}
                 </option>
               ))}
             </optgroup>
-            <option value="__custom__">Other cross...</option>
+            <option value="__custom__">{t("otherCross")}</option>
           </Select>
           {selectedPair === "__custom__" ? (
             <div className="flex gap-2">
               <Input
                 className={inputClassName}
                 value={customPair}
-                placeholder="Type EUR/TRY or NOKSEK"
+                placeholder={t("customPairPlaceholder")}
                 onChange={(event) => setCustomPair(event.target.value.toUpperCase())}
               />
               <Button className={editable ? "border border-bank-cyan/50 bg-bank-cyan/10 text-bank-text hover:bg-bank-cyan/20" : undefined} type="button" onClick={submitCustomPair}>
-                Load
+                {t("load")}
               </Button>
             </div>
           ) : null}

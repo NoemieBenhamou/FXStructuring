@@ -3,7 +3,10 @@
     "name": "FX Structure LAB",
     "codename": "FXStructureLab",
     "tagline": "在一个多语言结构化驾驶舱中整合市场数据、收益分析和面向客户的外汇对冲方案。",
-    "disclaimer": "仅供教育演示之用，不构成投资建议。价格、收益、概率、Greeks 和风险指标均为示意值，并非可执行市场报价。启用实时数据时，数据来自第三方，可能延迟、不完整或不可用。"
+    "disclaimer": "仅供教育演示之用，不构成投资建议。价格、收益、概率、Greeks 和风险指标均为示意值，并非可执行市场报价。启用实时数据时，数据来自第三方，可能延迟、不完整或不可用。",
+    "workspace": "Institutional FX structuring workspace",
+    "workspaceShort": "Institutional workspace",
+    "tickerNote": "Refresh every 5 min • 15 min delay"
   },
   "nav": {
     "home": "主页",
@@ -22,31 +25,88 @@
     "marketCard": "实时或演示 FX 数据、即期趋势、已实现波动率和 Market Pulse。",
     "structureCard": "与目标、约束和适当性一致的结构建议。",
     "payoffCard": "Garman-Kohlhagen 定价、Greeks 和情景收益比较。",
-    "summaryCard": "以主要机构客户语言提供技术版和客户友好版说明。"
+    "summaryCard": "以主要机构客户语言提供技术版和客户友好版说明。",
+    "preview": {
+      "pairSelection": "Pair selection",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load",
+      "previewCockpit": "Preview cockpit",
+      "selectedPair": "{pair} selected",
+      "regimeBadgeTitle": "Regime is derived from the latest Volatility 1 reading versus its two-year distribution.",
+      "volatility": "Volatility {number}",
+      "periodLabel": "{label} period",
+      "toggleCurveTitle": "Toggle {label} on or off.",
+      "realizedVolatilityName": "{label} realized volatility",
+      "legend": "{label}: {days}-day realized volatility",
+      "regimeFrameworkTitle": "The regime is anchored to the latest Volatility 1 reading versus the two-year distribution of that same realized-volatility series.",
+      "quantileFramework": "Quantile framework: calm if latest Volatility 1 is below Q25 ({q25}%), neutral if between Q25 and Q75 ({q75}%), stressed if above Q75.",
+      "structureIdeas": "Structure ideas",
+      "newsPreview": "News preview",
+      "regimes": {
+        "calm": {
+          "label": "Market is Calm",
+          "subtitle": "Low-vol regime",
+          "description": "Stable market conditions, compressed risk premia, often trend-friendly but vulnerable to volatility shocks."
+        },
+        "neutral": {
+          "label": "Normal / neutral regime",
+          "subtitle": "Medium volatility",
+          "description": "Typical market environment; volatility is trading inside its interquartile range."
+        },
+        "stressed": {
+          "label": "Market is Stressed",
+          "subtitle": "High-vol regime",
+          "description": "Volatility is above its upper quartile and market pricing is reflecting a stressed backdrop."
+        }
+      },
+      "ideas": {
+        "forward": {
+          "name": "Forward",
+          "note": "Budget certainty for known USD outflow."
+        },
+        "vanilla": {
+          "name": "Vanilla option",
+          "note": "Preserve upside while capping worst case."
+        },
+        "riskReversal": {
+          "name": "Risk reversal",
+          "note": "Zero-premium protection with sold-strike trade-off."
+        }
+      }
+    }
   },
   "market": {
     "title": "市场驾驶舱",
     "subtitle": "覆盖主要货币对的即期、已实现波动率、carry 直觉和市场状态。",
     "news": "Market Pulse",
-    "liveStatus": "实时数据状态"
+    "liveStatus": "实时数据状态",
+    "eyebrow": "FX dashboard"
   },
   "exposure": {
     "title": "Client Exposure Translator",
     "subtitle": "将客户现金流方向和约束条件转换为敞口诊断与相关产品范围。",
-    "action": "转换敞口"
+    "action": "转换敞口",
+    "eyebrow": "Client workflow"
   },
   "structures": {
     "title": "Structure Recommender",
     "subtitle": "给出相关对冲结构，并从客户、销售、交易和风险控制角度说明理由。",
-    "whyThisTrades": "为什么适合这笔交易"
+    "whyThisTrades": "为什么适合这笔交易",
+    "eyebrow": "Recommendation engine"
   },
   "payoff": {
     "title": "收益实验室",
-    "subtitle": "交互式外汇期权定价、Greeks 和简化结构收益比较。"
+    "subtitle": "交互式外汇期权定价、Greeks 和简化结构收益比较。",
+    "eyebrow": "Quant workflow"
   },
   "portfolio": {
     "title": "组合外汇风险",
-    "subtitle": "敞口集中度、分散化效果和剩余对冲风险。"
+    "subtitle": "敞口集中度、分散化效果和剩余对冲风险。",
+    "eyebrow": "Cross-asset overlay",
+    "badge": "Diversification lens"
   },
   "ma": {
     "title": "M&A Deal-Contingent Hedge Studio",
@@ -58,6 +118,18 @@
     "technical": "技术说明",
     "client": "客户友好说明",
     "emailReady": "可直接用于邮件的摘要",
-    "riskWarning": "风险提示"
+    "riskWarning": "风险提示",
+    "eyebrow": "Distribution output"
+  },
+  "common": {
+    "selectLanguage": "Select language",
+    "fxPairSelector": {
+      "label": "Currency pair",
+      "majorCrosses": "Major crosses",
+      "otherSupportedCrosses": "Other supported crosses",
+      "otherCross": "Other cross...",
+      "customPairPlaceholder": "Type EUR/TRY or NOKSEK",
+      "load": "Load"
+    }
   }
 }

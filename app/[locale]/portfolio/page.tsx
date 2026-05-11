@@ -7,7 +7,7 @@ export default async function PortfolioPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader eyebrow="Cross-asset overlay" title={t("title")} description={t("subtitle")} badge="Diversification lens" />
+      <PageHeader eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")} badge={t("badge")} />
       <PortfolioRiskPanel />
     </div>
   );
